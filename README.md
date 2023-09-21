@@ -9,20 +9,49 @@
 5. [Intelligent Code Completion](#intelligent-code-completion)
 6. [Packing](#packing)
 7. [Secrets](#secrets)
-8. [Resources](#resources)
+8. [Running the Flask Server](#running-the-flask-server)
+9. [Resources](#resources)
 
 ## Installing and Running
 
-### Procedures:
+### Running the Chrome Extension:
 
 1. Check if your [Node.js](https://nodejs.org/) version is >= **18**.
-2. Run `npm install` to install the dependencies.
-3. Run `npm start`
-4. Load your extension on Chrome following:
-   1. Access `chrome://extensions/`
-   2. Check `Developer mode`
-   3. Click on `Load unpacked extension`
-   4. Select the `build` folder.
+2. Navigate to the `frontend` directory.
+3. Run `npm install` to install the dependencies.
+4. Run `npm start`
+5. Load your extension on Chrome following:
+    1. Access `chrome://extensions/`
+    2. Check `Developer mode`
+    3. Click on `Load unpacked extension`
+    4. Select the `build` folder.
+
+### Running the Flask Server:
+
+1. Navigate to the `backend` directory.
+2. Activate the Python virtual environment:
+    - **Linux/Mac**: `source venv/bin/activate`
+    - **Windows**: `venv\Scripts\activate`
+3. Install the required Python packages:
+    ```bash
+    pip3 install -r requirements.txt
+    ```
+4. Run the Flask server:
+    ```bash
+    python3 flaskserver.py
+    ```
+5. The server will start on `http://localhost:5000/`.
+
+#### Testing the Professor GET Endpoint:
+
+You can test the endpoint using a web browser, Postman, or `curl`:
+
+-   **Web Browser**: Navigate to `http://localhost:5000/get_professor_data?name=John%20Doe` (replace `John%20Doe` with the professor's name).
+-   **Postman**: Create a GET request to `http://localhost:5000/get_professor_data?name=John%20Doe`.
+-   **Curl**: Run the following command in the terminal:
+    ```bash
+    curl "http://localhost:5000/get_professor_data?name=John%20Doe"
+    ```
 
 ## Structure
 
@@ -63,12 +92,12 @@ and on your `src/manifest.json`:
 
 ```json
 {
-  "content_scripts": [
-    {
-      "matches": ["https://www.google.com/*"],
-      "js": ["myContentScript.bundle.js"]
-    }
-  ]
+    "content_scripts": [
+        {
+            "matches": ["https://www.google.com/*"],
+            "js": ["myContentScript.bundle.js"]
+        }
+    ]
 }
 ```
 
@@ -95,13 +124,13 @@ To this task this boilerplate import the file `./secrets.<THE-NODE_ENV>.js` on y
 _./secrets.development.js_
 
 ```js
-export default { key: '123' };
+export default { key: "123" };
 ```
 
 _./src/popup.js_
 
 ```js
-import secrets from 'secrets';
+import secrets from "secrets";
 ApiCall({ key: secrets.key });
 ```
 
@@ -109,5 +138,5 @@ ApiCall({ key: secrets.key });
 
 ## Resources:
 
-- [Webpack documentation](https://webpack.js.org/concepts/)
-- [Chrome Extension documentation](https://developer.chrome.com/extensions/getstarted)
+-   [Webpack documentation](https://webpack.js.org/concepts/)
+-   [Chrome Extension documentation](https://developer.chrome.com/extensions/getstarted)
