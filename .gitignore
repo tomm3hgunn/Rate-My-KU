@@ -1,16 +1,13 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules/
 
 # testing
-/coverage
-
-# production
-/build
+coverage/
 
 # zip
-/zip
+zip/
 
 # misc
 .DS_Store
@@ -22,3 +19,28 @@
 
 # secrets
 secrets.*.js
+
+.env
+.flaskenv
+*.pyc
+*.pyo
+env/
+venv/
+.venv/
+env*
+dist/
+build/
+*.egg
+*.egg-info/
+.tox/
+.cache/
+.pytest_cache/
+.idea/
+docs/_build/
+.vscode
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+*,cover
