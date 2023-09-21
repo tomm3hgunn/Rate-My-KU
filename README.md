@@ -9,8 +9,7 @@
 5. [Intelligent Code Completion](#intelligent-code-completion)
 6. [Packing](#packing)
 7. [Secrets](#secrets)
-8. [Running the Flask Server](#running-the-flask-server)
-9. [Resources](#resources)
+8. [Resources](#resources)
 
 ## Installing and Running
 
