@@ -48,7 +48,8 @@ export const showData = () => {
               console.log(`Fetching data for ${professorName}`);
               fetchProfessorData(professorName, element);
             }
-          }, index * 1000); // ! Remove index for instant results
+            //   }, index * 1000); // ! Remove index for instant results
+          }, 1000); // ! Remove index for instant results
         }
       }
     });
@@ -63,6 +64,15 @@ export const showData = () => {
       console.log('Search button clicked');
       // Wait for a short delay to allow the search results to load
       setTimeout(showProfessorData, 2000);
+    });
+  }
+  const searchInput = document.getElementById('classesSearchText');
+  if (searchInput) {
+    searchInput.addEventListener('keydown', function (event) {
+      console.log('Search input keydown');
+      if (event.key === 'Enter') {
+        setTimeout(showProfessorData, 2000);
+      }
     });
   }
 };
