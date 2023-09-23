@@ -41,6 +41,8 @@
     ```
 5. The server will start on `http://localhost:5000/`.
 
+The endpoint is also hosted on https://ratemyprofessorapi.onrender.com/. Must login to Render to modify, but it will automatically update when you push to the `main` branch.
+
 #### Testing the Professor GET Endpoint:
 
 You can test the endpoint using a web browser, Postman, or `curl`:
