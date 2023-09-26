@@ -1,76 +1,108 @@
-// contentScript.js
+/**
+ * Prologue Comments
+ *
+ * Name of code artifact: Content Script for RateMyKU Extension
+ * Brief description: This script fetches and displays professor ratings on the KU classes website.
+ * Programmer's name: Thomas Nguyen
+ * Date the code was created: 09/22/23
+ * Brief description of each revision & author:
+ *    - Added doc-strings and comments. (Thomas Nguyen @ 09/26/23)
+ * Pre-conditions:
+ *    - The script must be injected into the KU classes website.
+ * Post-conditions:
+ *    - Professor ratings are displayed next to professor names.
+ * Error and exception condition values:
+ *    - Console errors if the fetch request fails.
+ * Side effects:
+ *    - Modifies the DOM to include professor ratings.
+ * Invariants: None
+ * Any known faults: None
+ */
+
+// Export the main function to show professor data
 export const showData = () => {
-  // Function to fetch professor data
+  /**
+   * Fetches professor data from the API and appends it to the DOM.
+   * @param {string} professorName - The name of the professor.
+   * @param {Element} element - The DOM element to append the rating to.
+   */
   function fetchProfessorData(professorName, element) {
+    // Fetch data from the API
     fetch(
       `https://ratemyprofessorapi.onrender.com/get_professor_data?name=${professorName}`
     )
       .then((res) => res.json())
       .then((data) => {
-        // Create a new element to display the rating
+        // Create a new span element to display the rating
         const ratingElement = document.createElement('span');
         ratingElement.className = 'professor-rating';
 
-        // Check status; if "error," then set text to N/A
+        // Check if the API returned an error
         if (data.status === 'error') {
           ratingElement.textContent = 'Rating: N/A, Difficulty: N/A';
         } else {
           ratingElement.textContent = `Rating: ${data.data.averageRating}, Difficulty: ${data.data.averageDifficulty}`;
         }
 
-        // Append the rating element next to the professor name
+        // Append the rating next to the professor name
         if (element.parentElement) {
           element.parentElement.appendChild(ratingElement);
         }
       })
       .catch((error) => {
+        // Log any errors
         console.error('Failed to fetch data', error);
       });
   }
 
+  /**
+   * Finds all professor names on the page and fetches their data.
+   */
   function showProfessorData() {
-    // Find all professor names by title attribute
+    // Query all elements that contain professor names
     const professorElements = document.querySelectorAll(
       'a[title="Click here to get instructor info"]'
     );
-    // const firstFiveProfessors = Array.from(professorElements).slice(0, 5); // Select only the first 5
 
+    // Loop through each professor name element
     professorElements.forEach((element, index) => {
       // Check if the parent <tr> contains "LEC"
       const parentRow = element.closest('tr');
       if (parentRow) {
         const sectionTypeCell = parentRow.querySelector('td:first-child');
         if (sectionTypeCell && sectionTypeCell.textContent.includes('LEC')) {
-          // Add delay to avoid rate limiting
+          // Add a delay to avoid rate limiting
           setTimeout(() => {
             const professorName = element.textContent;
             if (professorName) {
               console.log(`Fetching data for ${professorName}`);
               fetchProfessorData(professorName, element);
             }
-            //   }, index * 1000); // ! Remove index for instant results
-          }, 1000); // ! Remove index for instant results
+          }, 1000); // Delay of 1 second
         }
       }
     });
   }
 
-  // Add event listener to the "Search" button
+  // Attach an event listener to the "Search" button
   const searchButton = document.querySelector(
     '.btn.btn-primary.classSearchButton.classes_searchBarItem'
   );
   if (searchButton) {
     searchButton.addEventListener('click', () => {
       console.log('Search button clicked');
-      // Wait for a short delay to allow the search results to load
+      // Add a delay to allow search results to load
       setTimeout(showProfessorData, 2000);
     });
   }
+
+  // Attach an event listener to the search input field
   const searchInput = document.getElementById('classesSearchText');
   if (searchInput) {
     searchInput.addEventListener('keydown', function (event) {
       console.log('Search input keydown');
       if (event.key === 'Enter') {
+        // Add a delay to allow search results to load
         setTimeout(showProfessorData, 2000);
       }
     });
