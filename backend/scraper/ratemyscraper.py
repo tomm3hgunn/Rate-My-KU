@@ -1,10 +1,33 @@
-# Scrapes RateMyProfessor for KU professors
+"""
+Prologue Comments
+
+Name of code artifact: RateMyProfessorScraper
+Brief description: This code defines a Python class for scraping professor data from RateMyProfessor.
+Programmer's name: Thomas Nguyen
+Date the code was created: 09/22/23
+Brief description of each revision & author:
+    - Added doc-strings and comments. (Thomas Nguyen @ 09/26/23)
+Pre-conditions: 
+    - `requests` and `re` modules must be installed.
+Post-conditions:
+    - Returns a dictionary containing professor data.
+Error and exception condition values: 
+    - IndexError if the professor is not found.
+Side effects: None
+Invariants: None
+Any known faults: None
+"""
+
+# Import required modules
 import requests
 import re
 
 
 class RateMyProfessorScraper:
     def __init__(self, id) -> None:
+        """
+        Initializes the scraper with a university ID.
+        """
         self.university_id = id
 
     def search_by_professor_name(self, name: str) -> dict:
@@ -12,7 +35,7 @@ class RateMyProfessorScraper:
         Scrapes RateMyProfessor for a professor's data
         """
         url = f"https://www.ratemyprofessors.com/search/professors/{self.university_id}?q={name}"
-        print(f"Requested URL: {url}")
+        print(f"Requested URL: {url}")  # Debugging line, consider removing in production
         page = requests.get(url)
 
         # Using Regex to find all the data
@@ -43,7 +66,7 @@ class RateMyProfessorScraper:
 
     def get_professor_data(self, name: str):
         """
-        Uses professor data dictionary and gets only first one
+        Retrieves the first professor's data from the search results.
         """
         professor = self.search_by_professor_name(name)
         try:
@@ -69,6 +92,7 @@ class RateMyProfessorScraper:
             return {"status": "error", "message": "Professor not found", "data": None}
 
 
+# Main execution for testing
 if __name__ == "__main__":
     name = "Gibbons, John"
     scraper = RateMyProfessorScraper(id=1117)
