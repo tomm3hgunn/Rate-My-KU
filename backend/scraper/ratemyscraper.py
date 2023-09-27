@@ -91,6 +91,19 @@ class RateMyProfessorScraper:
         except IndexError:
             return {"status": "error", "message": "Professor not found", "data": None}
 
+    def get_updated_professor_data(self, name: str):
+        """
+        Retrieves the first professor's data from the search results and uses the url to visit and scrape the professor specific page.
+        Doing this to get the most updated data.
+        """
+        professor = self.search_by_professor_name(name)
+        try:
+            professor_id = list(professor.keys())[0]
+            professor_url = professor[professor_id]["url"]
+            # TODO: Scrape the professor specific page using URL HERE
+        except IndexError:
+            return {"status": "error", "message": "Professor not found", "data": None}
+
 
 # Main execution for testing
 if __name__ == "__main__":
