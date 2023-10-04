@@ -1,7 +1,8 @@
+// Hex color: #146091
 import React, { useState } from 'react';
 import './Popup.css';
 
-const logo = require('../../assets/img/logo.svg');
+const logo = require('../../assets/img/RateMyKU_Logo.png');
 const Popup: React.FC = () => {
     const [isPopupOn, setIsPopupOn] = useState(false);
 
