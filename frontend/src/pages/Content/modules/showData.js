@@ -37,12 +37,28 @@ export const showData = () => {
         const ratingElement = document.createElement('span');
         ratingElement.className = 'professor-rating';
 
+        // Create tooltip element
+        const tooltipElement = document.createElement('span');
+        tooltipElement.className = 'tooltip-content';
+
         // Check if the API returned an error
         if (data.status === 'error') {
           ratingElement.textContent = 'Rating: N/A, Difficulty: N/A';
+          tooltipElement.textContent = 'No additional data available';
         } else {
-          ratingElement.textContent = `Rating: ${data.data.averageRating}, Difficulty: ${data.data.averageDifficulty}`;
+          ratingElement.innerHTML = `<a href="${data.data.url}" target="_blank">Rating: ${data.data.averageRating}, Difficulty: ${data.data.averageDifficulty}</a>`;
+          // const logoSrc = chrome.runtime.getURL('src/assets/img/RateMyKU_Logo.png');
+          tooltipElement.innerHTML = `       
+          <strong style="color: #ffffff !important;">${data.data.lastName}, ${data.data.firstName}</strong><br/>
+          <strong style="color: #ffffff !important;">Difficulty:</strong> <span style="color: #ffffff !important;">${data.data.averageDifficulty} / 5</span><br/>
+          <strong style="color: #ffffff !important;">Rating:</strong> <span style="color: #ffffff !important;">${data.data.averageRating} / 5</span><br/>
+          <strong style="color: #ffffff !important;">Department:</strong> <span style="color: #ffffff !important;">${data.data.department}</span><br/>
+          <strong style="color: #ffffff !important;">Would Take Again:</strong> <span style="color: #ffffff !important;">${parseFloat(data.data.wouldTakeAgainPercentage).toFixed(2)}%</span><br/>
+          <strong style="color: #ffffff !important;">Total Ratings:</strong> <span style="color: #ffffff !important;">${data.data.numberOfRatings}</span>`;
         }
+
+        // Append the tooltip to the rating element
+        ratingElement.appendChild(tooltipElement);
 
         // Append the rating next to the professor name
         if (element.parentElement) {
