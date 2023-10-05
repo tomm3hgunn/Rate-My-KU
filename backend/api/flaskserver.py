@@ -7,6 +7,7 @@ Programmer's name: Thomas Nguyen
 Date the code was created: 09/22/23
 Brief description of each revision & author:
     - Added doc-strings and comments. (Thomas Nguyen @ 09/26/23)
+    - Initialize database (Thomas Nguyen @ 10/04/23)
 Pre-conditions: 
     - Flask and flask_cors must be installed.
     - The scraper module must be available.
@@ -30,6 +31,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from scraper.ratemyscraper import RateMyProfessorScraper
+from database.database import db, init_database
 
 
 # Initialize Flask app
@@ -41,6 +43,12 @@ scraper = RateMyProfessorScraper(id=school_id)
 
 CORS(app)
 
+# Initialize the database
+init_database(app)
+
+# Create all database tables
+with app.app_context():
+    db.create_all()
 
 # Define the index route
 @app.route("/", methods=["GET"])
