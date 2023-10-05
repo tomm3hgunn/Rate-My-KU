@@ -31,8 +31,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from scraper.ratemyscraper import RateMyProfessorScraper
-from database.database import db, init_database
-
+from database.database import db, init_database, add_professor, get_professor_by_name
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -49,6 +48,7 @@ init_database(app)
 # Create all database tables
 with app.app_context():
     db.create_all()
+
 
 # Define the index route
 @app.route("/", methods=["GET"])
@@ -87,11 +87,32 @@ def get_professor_data():
     Returns professor data based on the 'name' query parameter.
     """
     name = request.args.get("name")
-    print(name)  # Debugging line, consider removing in production
-    data = scraper.get_professor_data(name)
+
+    # Check if the professor exists in the database
+    professor = get_professor_by_name(name)
+
+    if professor:
+        # If exists, fetch from database
+        print("Data fetched from database.")
+        data = {
+            "firstName": professor.firstName,
+            "lastName": professor.lastName,
+            "averageRating": professor.averageRating,
+            "averageDifficulty": professor.averageDifficulty,
+            "numberOfRatings": professor.numberOfRatings,
+            "wouldTakeAgainPercentage": professor.wouldTakeAgainPercentage,
+            "department": professor.department,
+            "url": professor.url,
+        }
+    else:
+        # If not exists, scrape and add to database
+        print("Data scraped and added to database.")
+        data = scraper.get_professor_data(name)
+        add_professor(data["data"])
+
     return jsonify(data)
 
 
 # Run the Flask app
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

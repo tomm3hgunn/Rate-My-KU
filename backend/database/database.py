@@ -55,6 +55,22 @@ def init_database(app):
     db.init_app(app)
 
 
+def add_professor(data):
+    professor = Professor(**data)
+    db.session.add(professor)
+    db.session.commit()
+
+
+def get_professor_by_name(name):
+    # if there is a comma, split name
+    if "," in name:
+        name = name.split(",")
+        return Professor.query.filter_by(firstName=name[1].strip(), lastName=name[0].strip()).first()
+    return Professor.query.filter(
+        (Professor.firstName.ilike(f"%{name}%")) | (Professor.lastName.ilike(f"%{name}%"))
+    ).first()
+
+
 class Professor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     firstName = db.Column(db.String(50), nullable=False)
