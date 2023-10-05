@@ -49,6 +49,7 @@ init_database(app)
 with app.app_context():
     db.create_all()
 
+
 # Define the index route
 @app.route("/", methods=["GET"])
 def index():
