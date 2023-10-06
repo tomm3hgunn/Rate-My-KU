@@ -18,7 +18,6 @@
  * Invariants: None
  * Any known faults: None
  */
-
 // Export the main function to show professor data
 export const showData = () => {
   /**
@@ -47,8 +46,10 @@ export const showData = () => {
           tooltipElement.textContent = 'No additional data available';
         } else {
           ratingElement.innerHTML = `<a href="${data.data.url}" target="_blank">Rating: ${data.data.averageRating}, Difficulty: ${data.data.averageDifficulty}</a>`;
-          // const logoSrc = chrome.runtime.getURL('src/assets/img/RateMyKU_Logo.png');
-          tooltipElement.innerHTML = `       
+          const logoSrc = chrome.runtime.getURL('../../../assets/img/RateMyKU_Logo.png');
+          console.log(logoSrc);
+          tooltipElement.innerHTML = `   
+          <img src="${logoSrc.src}" alt="RateMyKU Logo" style="width: 100px; display: block; margin: auto;"><br/>    
           <strong style="color: #ffffff !important;">${data.data.lastName}, ${data.data.firstName}</strong><br/>
           <strong style="color: #ffffff !important;">Difficulty:</strong> <span style="color: #ffffff !important;">${data.data.averageDifficulty} / 5</span><br/>
           <strong style="color: #ffffff !important;">Rating:</strong> <span style="color: #ffffff !important;">${data.data.averageRating} / 5</span><br/>
