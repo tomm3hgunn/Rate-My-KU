@@ -46,7 +46,7 @@ export const showData = () => {
           tooltipElement.textContent = 'No additional data available';
         } else {
           ratingElement.innerHTML = `<a href="${data.data.url}" target="_blank">Rating: ${data.data.averageRating}, Difficulty: ${data.data.averageDifficulty}</a>`;
-          const logoSrc = chrome.runtime.getURL('../../../assets/img/RateMyKU_Logo.png');
+          const logoSrc = chrome.runtime.getURL('a9065098481a44dfc2ec.png');
           console.log(logoSrc);
           tooltipElement.innerHTML = `   
           <img src="${logoSrc.src}" alt="RateMyKU Logo" style="width: 100px; display: block; margin: auto;"><br/>    
