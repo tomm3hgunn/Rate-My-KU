@@ -3,14 +3,16 @@
  *
  * Name of code artifact: Content Script for RateMyKU Extension
  * Brief description: This script fetches and displays professor ratings on the KU classes website.
- * Programmer's name: Thomas Nguyen
+ * Programmer's name: Thomas Nguyen - Wyatt Parsons
  * Date the code was created: 09/22/23
  * Brief description of each revision & author:
  *    - Added doc-strings and comments. (Thomas Nguyen @ 09/26/23)
+ *    - Added UI for popup. (Wyatt Parsons # 10/08/2023)
  * Pre-conditions:
  *    - The script must be injected into the KU classes website.
  * Post-conditions:
  *    - Professor ratings are displayed next to professor names.
+ *    - When hovering over a rating, a tooltip is displayed with additional information.
  * Error and exception condition values:
  *    - Console errors if the fetch request fails.
  * Side effects:
@@ -45,9 +47,11 @@ export const showData = () => {
           ratingElement.textContent = 'Rating: N/A, Difficulty: N/A';
           tooltipElement.textContent = 'No additional data available';
         } else {
+          // Display the rating and difficulty
           ratingElement.innerHTML = `<a href="${data.data.url}" target="_blank">Rating: ${data.data.averageRating}, Difficulty: ${data.data.averageDifficulty}</a>`;
           const logoSrc = chrome.runtime.getURL('a9065098481a44dfc2ec.png');
           console.log(logoSrc);
+          // Display the tooltip
           tooltipElement.innerHTML = `   
           <img src="${logoSrc}" alt="RateMyKU Logo" style="width: 100px; display: block; margin: auto;"><br/>    
           <strong style="color: #ffffff !important;">${data.data.lastName}, ${data.data.firstName}</strong><br/>
