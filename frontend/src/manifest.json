@@ -38,7 +38,9 @@
                 "icon-34.png",
                 "a9065098481a44dfc2ec.png"
             ],
-            "matches": []
+            "matches": [
+                "<all_urls>"
+            ]
         }
     ],
     "permissions": [

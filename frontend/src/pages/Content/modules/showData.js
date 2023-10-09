@@ -49,7 +49,7 @@ export const showData = () => {
           const logoSrc = chrome.runtime.getURL('a9065098481a44dfc2ec.png');
           console.log(logoSrc);
           tooltipElement.innerHTML = `   
-          <img src="${logoSrc.src}" alt="RateMyKU Logo" style="width: 100px; display: block; margin: auto;"><br/>    
+          <img src="${logoSrc}" alt="RateMyKU Logo" style="width: 100px; display: block; margin: auto;"><br/>    
           <strong style="color: #ffffff !important;">${data.data.lastName}, ${data.data.firstName}</strong><br/>
           <strong style="color: #ffffff !important;">Difficulty:</strong> <span style="color: #ffffff !important;">${data.data.averageDifficulty} / 5</span><br/>
           <strong style="color: #ffffff !important;">Rating:</strong> <span style="color: #ffffff !important;">${data.data.averageRating} / 5</span><br/>
