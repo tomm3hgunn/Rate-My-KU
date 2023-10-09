@@ -95,14 +95,20 @@ def get_professor_data():
         # If exists, fetch from database
         print("Data fetched from database.")
         data = {
-            "firstName": professor.firstName,
-            "lastName": professor.lastName,
-            "averageRating": professor.averageRating,
-            "averageDifficulty": professor.averageDifficulty,
-            "numberOfRatings": professor.numberOfRatings,
-            "wouldTakeAgainPercentage": professor.wouldTakeAgainPercentage,
-            "department": professor.department,
-            "url": professor.url,
+            "status": "success",
+            "message": "Professor data retrieved successfully",
+            "total_results": 1,
+            "data": {
+                "id": professor.id,
+                "firstName": professor.firstName,
+                "lastName": professor.lastName,
+                "averageRating": professor.averageRating,
+                "averageDifficulty": professor.averageDifficulty,
+                "numberOfRatings": professor.numberOfRatings,
+                "wouldTakeAgainPercentage": professor.wouldTakeAgainPercentage,
+                "department": professor.department,
+                "url": professor.url,
+            },
         }
     else:
         # If not exists, scrape and add to database
