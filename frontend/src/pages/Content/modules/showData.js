@@ -3,14 +3,16 @@
  *
  * Name of code artifact: Content Script for RateMyKU Extension
  * Brief description: This script fetches and displays professor ratings on the KU classes website.
- * Programmer's name: Thomas Nguyen
+ * Programmer's name: Thomas Nguyen - Wyatt Parsons
  * Date the code was created: 09/22/23
  * Brief description of each revision & author:
  *    - Added doc-strings and comments. (Thomas Nguyen @ 09/26/23)
+ *    - Added UI for popup. (Wyatt Parsons # 10/08/2023)
  * Pre-conditions:
  *    - The script must be injected into the KU classes website.
  * Post-conditions:
  *    - Professor ratings are displayed next to professor names.
+ *    - When hovering over a rating, a tooltip is displayed with additional information.
  * Error and exception condition values:
  *    - Console errors if the fetch request fails.
  * Side effects:
@@ -18,7 +20,6 @@
  * Invariants: None
  * Any known faults: None
  */
-
 // Export the main function to show professor data
 export const showData = () => {
   /**
@@ -37,12 +38,32 @@ export const showData = () => {
         const ratingElement = document.createElement('span');
         ratingElement.className = 'professor-rating';
 
+        // Create tooltip element
+        const tooltipElement = document.createElement('span');
+        tooltipElement.className = 'tooltip-content';
+
         // Check if the API returned an error
         if (data.status === 'error') {
           ratingElement.textContent = 'Rating: N/A, Difficulty: N/A';
+          tooltipElement.textContent = 'No additional data available';
         } else {
-          ratingElement.textContent = `Rating: ${data.data.averageRating}, Difficulty: ${data.data.averageDifficulty}`;
+          // Display the rating and difficulty
+          ratingElement.innerHTML = `<a href="${data.data.url}" target="_blank">Rating: ${data.data.averageRating}, Difficulty: ${data.data.averageDifficulty}</a>`;
+          const logoSrc = chrome.runtime.getURL('a9065098481a44dfc2ec.png');
+          console.log(logoSrc);
+          // Display the tooltip
+          tooltipElement.innerHTML = `   
+          <img src="${logoSrc}" alt="RateMyKU Logo" style="width: 100px; display: block; margin: auto;"><br/>    
+          <strong style="color: #ffffff !important;">${data.data.lastName}, ${data.data.firstName}</strong><br/>
+          <strong style="color: #ffffff !important;">Difficulty:</strong> <span style="color: #ffffff !important;">${data.data.averageDifficulty} / 5</span><br/>
+          <strong style="color: #ffffff !important;">Rating:</strong> <span style="color: #ffffff !important;">${data.data.averageRating} / 5</span><br/>
+          <strong style="color: #ffffff !important;">Department:</strong> <span style="color: #ffffff !important;">${data.data.department}</span><br/>
+          <strong style="color: #ffffff !important;">Would Take Again:</strong> <span style="color: #ffffff !important;">${parseFloat(data.data.wouldTakeAgainPercentage).toFixed(2)}%</span><br/>
+          <strong style="color: #ffffff !important;">Total Ratings:</strong> <span style="color: #ffffff !important;">${data.data.numberOfRatings}</span>`;
         }
+
+        // Append the tooltip to the rating element
+        ratingElement.appendChild(tooltipElement);
 
         // Append the rating next to the professor name
         if (element.parentElement) {
