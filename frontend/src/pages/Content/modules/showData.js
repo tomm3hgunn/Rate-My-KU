@@ -53,7 +53,7 @@ export const showData = () => {
           console.log(logoSrc);
           // Display the tooltip
           tooltipElement.innerHTML = `   
-          <img src="${logoSrc}" alt="RateMyKU Logo" style="width: 100px; display: block; margin: auto;"><br/>    
+          <img src="${logoSrc}" alt="RateMyKU Logo" style="width: 180px; display: block; margin: 10px auto 0 auto;"><br/>  
           <strong style="color: #ffffff !important;">${data.data.lastName}, ${data.data.firstName}</strong><br/>
           <strong style="color: #ffffff !important;">Difficulty:</strong> <span style="color: #ffffff !important;">${data.data.averageDifficulty} / 5</span><br/>
           <strong style="color: #ffffff !important;">Rating:</strong> <span style="color: #ffffff !important;">${data.data.averageRating} / 5</span><br/>
