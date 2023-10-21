@@ -21,6 +21,9 @@
  * Any known faults: None
  */
 // Export the main function to show professor data
+
+let isExtensionEnabled = false;
+
 export const showData = () => {
   /**
    * Fetches professor data from the API and appends it to the DOM.
@@ -129,3 +132,45 @@ export const showData = () => {
     });
   }
 };
+
+//! START
+
+
+// Added new functionalities
+const toggleExtensionFeatures = () => {
+  if (!isExtensionEnabled) {
+    console.log('Extension is disabled');
+    return;
+  }
+
+  // Implement the feature toggling here
+};
+
+function enableExtensionFeatures() {
+  isExtensionEnabled = true;
+  toggleExtensionFeatures();
+}
+
+function disableExtensionFeatures() {
+  isExtensionEnabled = false;
+  // Add code to remove or hide professor ratings from the webpage, if needed
+}
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.isPopupOn) {
+    enableExtensionFeatures();
+  } else {
+    disableExtensionFeatures();
+  }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  chrome.storage.local.get(['isPopupOn'], (result) => {
+    if (result.isPopupOn) {
+      enableExtensionFeatures();
+    } else {
+      disableExtensionFeatures();
+    }
+  });
+});
+
