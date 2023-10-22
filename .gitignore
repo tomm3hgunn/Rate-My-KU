@@ -26,6 +26,7 @@ secrets.*.js
 *.pyo
 env/
 venv/
+venv_win/
 .venv/
 env*
 dist/
