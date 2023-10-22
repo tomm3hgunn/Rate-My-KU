@@ -8,6 +8,7 @@ Date the code was created: 09/22/23
 Brief description of each revision & author:
     - Added doc-strings and comments. (Thomas Nguyen @ 09/26/23)
     - Initialize database (Thomas Nguyen @ 10/04/23)
+    - Get updated professor data in their specific page (Thomas Nguyen @ 10/22/23)
 Pre-conditions: 
     - Flask and flask_cors must be installed.
     - The scraper module must be available.
@@ -115,6 +116,47 @@ def get_professor_data():
         print("Data scraped and added to database.")
         data = scraper.get_professor_data(name)
         add_professor(data["data"])
+
+    return jsonify(data)
+
+
+@app.route("/get_updated_professor_data", methods=["GET"])
+def get_updated_professor_data():
+    """
+    Returns professor data based on the 'name' query parameter.
+    """
+    name = request.args.get("name")
+
+    # Check if the professor exists in the database
+    professor = get_professor_by_name(name)
+
+    if professor:
+        # If exists, fetch from database
+        print("Data fetched from database.")
+        data = {
+            "status": "success",
+            "message": "Professor data retrieved successfully",
+            "total_results": 1,
+            "data": {
+                "id": professor.id,
+                "firstName": professor.firstName,
+                "lastName": professor.lastName,
+                "averageRating": professor.averageRating,
+                "averageDifficulty": professor.averageDifficulty,
+                "numberOfRatings": professor.numberOfRatings,
+                "wouldTakeAgainPercentage": professor.wouldTakeAgainPercentage,
+                "department": professor.department,
+                "url": professor.url,
+            },
+        }
+    else:
+        # If not exists, scrape and add to database
+        data = scraper.get_updated_professor_data(name)
+        print(data)
+        # Ensure that data is not empty
+        if data["data"]:
+            print("Data scraped and added to database.")
+            add_professor(data["data"])
 
     return jsonify(data)
 
