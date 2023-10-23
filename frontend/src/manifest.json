@@ -20,7 +20,6 @@
         {
             "matches": [
                 "https://classes.ku.edu/*"
-
             ],
             "js": [
                 "contentScript.bundle.js"
@@ -46,6 +45,7 @@
     ],
     "permissions": [
         "tabs",
-        "storage"
+        "storage",
+        "<all_urls>"
     ]
 }
