@@ -11,3 +11,17 @@ chrome.runtime.onInstalled.addListener(() => {
     });
 });
 
+// background.js
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    console.log('Message received in background:', request);
+    if (request.isPopupOn) {
+        chrome.storage.local.set({ isPopupOn: true }, () => {
+            console.log('State saved: true');
+        });
+    } else {
+        chrome.storage.local.set({ isPopupOn: false }, () => {
+            console.log('State saved: false');
+        });
+    }
+});
+

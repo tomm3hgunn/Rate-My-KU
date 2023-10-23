@@ -1,3 +1,29 @@
+/**
+ * Prologue Comments
+ *
+ * Name of code artifact: Popup.tsx
+ * Brief description: This file contains the code for the popup window that appears when the extension icon is clicked.
+ * Programmer's name: Wyatt Parsons
+ * Date the code was created: 9/10/23
+ * Brief description of each revision & author:
+ *    - Added state for toggling settings view (Wyatt Parsons 10/22/23) 
+ *    - Added switch communication with content script (Wyatt Parsons 10/22/23) 
+ *    - Added logos (Wyatt Parsons 10/22/23) 
+ *
+ * Pre-conditions:
+ *   - The extension is installed and enabled.
+ *   - The user has clicked on the extension icon.
+ * Post-conditions:
+ *    - The popup window is displayed.
+ *    - The user can toggle the extension on and off.
+ *    - The user can toggle the settings view.
+ * Error and exception condition values:
+ *    - None
+ * Side effects:
+ *    - None
+ * Invariants: None
+ * Any known faults: None
+ */
 import React, { useState, useEffect } from 'react';
 import './Popup.css';
 
@@ -16,8 +42,10 @@ const Popup: React.FC = () => {
         });
     }, []);
 
+    // State for toggling the extension on and off
     const [isPopupOn, setIsPopupOn] = useState(false);
 
+    // State for toggling settings view
     const [settings, setSettings] = useState({
         showRating: true,
         showDifficulty: true,
@@ -35,39 +63,46 @@ const Popup: React.FC = () => {
         });
     }, []);
 
-
+    // Save the state to chrome.storage when the state changes
     useEffect(() => {
         chrome.storage.local.set({ settings });
     }, [settings]);
 
-
+    // Toggle the extension on and off
+    // Toggle the extension on and off
     const togglePopup = () => {
-        setIsPopupOn(!isPopupOn);
+        const newState = !isPopupOn;  // Store the new state in a variable
+        setIsPopupOn(newState);  // Update the state
 
-        chrome.storage.local.set({ isPopupOn: !isPopupOn }, () => {
-            console.log('Popup state is set to ', !isPopupOn);
+        console.log('Toggling popup. New state:', newState);  // Log the new state to the console
+
+        chrome.storage.local.set({ isPopupOn: newState }, () => {
+            console.log('Popup state is saved to storage as', newState);
         });
 
         // Send a message to content script
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            const currentTab = tabs[0]; // Note: We're assuming here that a tab is active and in the current window
+            const currentTab = tabs[0];
             if (currentTab && currentTab.id) {
-                chrome.tabs.sendMessage(currentTab.id, { isPopupOn: !isPopupOn }, (response) => {
-                    console.log(response);
+                chrome.tabs.sendMessage(currentTab.id, { isPopupOn: newState }, (response) => {
+                    console.log('Message sent to content script with response:', response);
                     if (chrome.runtime.lastError) {
-                        console.error(chrome.runtime.lastError);
+                        console.error('Error occurred:', chrome.runtime.lastError);
                     }
                 });
             }
         });
     };
 
+    // Toggle the settings view
     const toggleSettings = () => {
         setShowSettings(!showSettings); // Toggle between settings and main view
     };
 
+    // Type for settings keys
     type SettingKeys = 'showRating' | 'showDifficulty' | 'showDepartment' | 'showWouldTakeAgain' | 'showTotalRatings';
 
+    // Handle a change in a setting
     const handleSettingChange = (setting: SettingKeys) => {
         setSettings(prevSettings => ({
             ...prevSettings,
@@ -75,7 +110,7 @@ const Popup: React.FC = () => {
         }));
     };
 
-
+    // Render the component
     return (
         <div className={`App ${isPopupOn ? 'active' : ''}`}>
             {showSettings ? (

@@ -7,7 +7,8 @@
  * Date the code was created: 09/22/23
  * Brief description of each revision & author:
  *    - Added doc-strings and comments. (Thomas Nguyen @ 09/26/23)
- *    - Added UI for popup. (Wyatt Parsons # 10/08/2023)
+ *    - Added UI for popup. (Wyatt Parsons @ 10/08/2023)
+ *    - Added logic for showing and hiding ratings. (Wyatt Parsons @ 10/22/2023)
  * Pre-conditions:
  *    - The script must be injected into the KU classes website.
  * Post-conditions:
@@ -22,14 +23,36 @@
  */
 // Export the main function to show professor data
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log('Message received:', request);  // Added log
-  if (request.isPopupOn) {
-    enableExtensionFeatures();
-  } else {
-    disableExtensionFeatures();
+// Listen for messages from the popup
+chrome.storage.onChanged.addListener((changes, namespace) => {
+  for (var key in changes) {
+    var storageChange = changes[key];
+    console.log('Storage key "%s" in namespace "%s" changed. ' +
+      'Old value was "%s", new value is "%s".',
+      key, namespace,
+      storageChange.oldValue, storageChange.newValue);
+
+    if (key === 'isPopupOn') {
+      if (storageChange.newValue) {
+        enableExtensionFeatures();
+      } else {
+        disableExtensionFeatures();
+      }
+    }
   }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  chrome.storage.local.get(['isPopupOn'], (result) => {
+    console.log('State fetched: ', result.isPopupOn);
+    if (result.isPopupOn) {
+      enableExtensionFeatures();
+    } else {
+      disableExtensionFeatures();
+    }
+  });
+});
+
 
 let isExtensionEnabled = false;
 
@@ -146,8 +169,7 @@ function showProfessorData() {
   });
 }
 
-//! START
-
+// Enable the extension
 function enableExtensionFeatures() {
   isExtensionEnabled = true;
   console.log('Extension enabled');
@@ -159,7 +181,7 @@ function enableExtensionFeatures() {
   showProfessorData();
 }
 
-
+// Disable the extension
 function disableExtensionFeatures() {
   isExtensionEnabled = false;
   console.log('Extension disabled');
@@ -168,31 +190,16 @@ function disableExtensionFeatures() {
   hideData();  // Assuming hideData is responsible for hiding/removing the ratings
 }
 
+// Hide the ratings
 function hideData() {
+  console.log('Hiding data');
   const ratingElements = document.querySelectorAll('.professor-rating');
   ratingElements.forEach(element => {
-    element.remove();  // Or you can hide it with CSS or any other appropriate method
+    element.remove();
+    console.log('Data hidden');
   });
 }
 
-
-// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-//   if (request.isPopupOn) {
-//     enableExtensionFeatures();
-//   } else {
-//     disableExtensionFeatures();
-//   }
-// });
-
-// document.addEventListener('DOMContentLoaded', () => {
-//   chrome.storage.local.get(['isPopupOn'], (result) => {
-//     if (result.isPopupOn) {
-//       enableExtensionFeatures();
-//     } else {
-//       disableExtensionFeatures();
-//     }
-//   });
-// });
 
 
 

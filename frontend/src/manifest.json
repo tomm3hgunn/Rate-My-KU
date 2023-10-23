@@ -19,7 +19,8 @@
     "content_scripts": [
         {
             "matches": [
-                "https://classes.ku.edu/*"
+                "https://classes.ku.edu/*",
+                "<all_urls>"
             ],
             "js": [
                 "contentScript.bundle.js"
