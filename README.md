@@ -11,6 +11,13 @@
 7. [Secrets](#secrets)
 8. [Resources](#resources)
 
+## Modified Files
+* all of backend/
+* frontend/
+  * src/pages/Content/modules/
+  *  src/pages/NewTab
+  *  src/pages/Popup
+
 ## Installing and Running
 
 ### Running the Chrome Extension:
