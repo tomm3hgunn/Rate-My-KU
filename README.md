@@ -21,6 +21,9 @@
 
 ## Installing and Running
 
+### IMPORTANT
+Since env files are not pushed to the repo, in frontend/utils, you need to create a file called `env.js` that can be empty.
+
 ### Running the Chrome Extension:
 
 1. Check if your [Node.js](https://nodejs.org/) version is >= **18**.
