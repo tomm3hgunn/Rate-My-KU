@@ -12,11 +12,12 @@
 8. [Resources](#resources)
 
 ## Modified Files
-* all of backend/
-* frontend/
-  * src/pages/Content/modules/
-  *  src/pages/NewTab
-  *  src/pages/Popup
+
+-   all of backend/
+-   frontend/
+    -   src/pages/Content/modules/
+    -   src/pages/NewTab
+    -   src/pages/Popup
 
 ## Installing and Running
 
@@ -60,6 +61,33 @@ You can test the endpoint using a web browser, Postman, or `curl`:
     ```bash
     curl "http://localhost:5000/get_professor_data?name=John%20Doe"
     ```
+
+## Windows Setup
+
+### WSL
+
+To run the front-end npm server, you will need to install WSL. Open PowerShell as an administrator and run the following command:  
+`wsl --install`  
+For more information, view [here](https://learn.microsoft.com/en-us/windows/wsl/setup/environment).
+
+### Clone the Repository
+
+After installing wsl, run wsl by typing `wsl` in PowerShell. Then, clone the repository by running the following command:  
+`git clone https://github.com/tomm3hgunn/Rate-My-KU`
+
+### Install Node.js
+
+To install Node.js, run the following commands:  
+`sudo apt update`  
+`sudo apt install nodejs`  
+`sudo apt install npm`
+
+## Run the Front-End
+
+To run the front-end, 'cd' to the `frontend` directory and run the following commands:  
+`npm install`  
+`npm start`  
+From here you can load the extension into Chrome following the instructions above.
 
 ## Structure
 
