@@ -1,33 +1,42 @@
-.professor-rating {
-  margin-left: 10px;
-  font-size: 14px;
-  color: #333;
-  cursor: pointer;
-}
-
+/* Base styling for the tooltip */
 .tooltip-content {
-  display: block; 
-  opacity: 0; 
-  transform: scale(0.95); 
-  position: absolute;
-  z-index: 1;
-  color: white;
-  background-image: radial-gradient(circle, #146091, #115480);
-  color: black;
-  border: none;
-  padding: 5px;
-  border-radius: 5px;
-  margin-top: -23px !important;
-  right: 35%;
-  box-shadow: 4px 5px 14px 0px rgba(0, 0, 0, 0.10), 16px 21px 26px 0px rgba(0, 0, 0, 0.09), 35px 47px 35px 0px rgba(0, 0, 0, 0.05), 62px 84px 42px 0px rgba(0, 0, 0, 0.01), 97px 131px 46px 0px rgba(0, 0, 0, 0.00);
-  transition: opacity 0.2s, transform 0.2s; 
+  background: white; /* Changed from gradient to flat color */
+  color: black; /* Text color */
+  border-radius: 8px; /* More pronounced rounded corners */
+  padding: 8px;
+  font-family: 'Luminari', sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Stack children vertically */
+  width: 300px; /* Adjust width as necessary */
 }
 
-.professor-rating:hover .tooltip-content {
-  opacity: 1; 
-  transform: scale(1); 
+/* Header section with logo and potentially a title */
+.tooltip-header {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid #e1e1e1; /* Separator line */
+  padding-bottom: 8px;
+  margin-bottom: 8px;
 }
 
-.highlight {
-  color: #146091;
+.tooltip-header img {
+  height: 40px; /* Adjust logo size */
+  margin-right: 8px;
 }
+
+/* Styling for individual detail rows */
+.tooltip-detail {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.tooltip-detail:last-child {
+  margin-bottom: 0;
+}
+
+.tooltip-name {
+  font-size: larger;
+}
+/* Other styles would need to be adjusted or added accordingly... */

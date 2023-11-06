@@ -27,10 +27,14 @@
 chrome.storage.onChanged.addListener((changes, namespace) => {
   for (var key in changes) {
     var storageChange = changes[key];
-    console.log('Storage key "%s" in namespace "%s" changed. ' +
-      'Old value was "%s", new value is "%s".',
-      key, namespace,
-      storageChange.oldValue, storageChange.newValue);
+    console.log(
+      'Storage key "%s" in namespace "%s" changed. ' +
+        'Old value was "%s", new value is "%s".',
+      key,
+      namespace,
+      storageChange.oldValue,
+      storageChange.newValue
+    );
 
     if (key === 'isPopupOn') {
       if (storageChange.newValue) {
@@ -53,14 +57,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-
 let isExtensionEnabled = false;
 
 /**
-   * Fetches professor data from the API and appends it to the DOM.
-   * @param {string} professorName - The name of the professor.
-   * @param {Element} element - The DOM element to append the rating to.
-   */
+ * Fetches professor data from the API and appends it to the DOM.
+ * @param {string} professorName - The name of the professor.
+ * @param {Element} element - The DOM element to append the rating to.
+ */
 function fetchProfessorData(professorName, element) {
   // Fetch data from the API
   fetch(
@@ -83,17 +86,34 @@ function fetchProfessorData(professorName, element) {
       } else {
         // Display the rating and difficulty
         ratingElement.innerHTML = `<a href="${data.data.url}" target="_blank">Rating: ${data.data.averageRating}, Difficulty: ${data.data.averageDifficulty}</a>`;
+
         const logoSrc = chrome.runtime.getURL('a9065098481a44dfc2ec.png');
         console.log(logoSrc);
+
         // Display the tooltip
-        tooltipElement.innerHTML = `   
-        <img src="${logoSrc}" alt="RateMyKU Logo" style="width: 180px; display: block; margin: 10px auto 0 auto;"><br/>  
-        <strong style="color: #ffffff !important;">${data.data.lastName}, ${data.data.firstName}</strong><br/>
-        <strong style="color: #ffffff !important;">Difficulty:</strong> <span style="color: #ffffff !important;">${data.data.averageDifficulty} / 5</span><br/>
-        <strong style="color: #ffffff !important;">Rating:</strong> <span style="color: #ffffff !important;">${data.data.averageRating} / 5</span><br/>
-        <strong style="color: #ffffff !important;">Department:</strong> <span style="color: #ffffff !important;">${data.data.department}</span><br/>
-        <strong style="color: #ffffff !important;">Would Take Again:</strong> <span style="color: #ffffff !important;">${parseFloat(data.data.wouldTakeAgainPercentage).toFixed(2)}%</span><br/>
-        <strong style="color: #ffffff !important;">Total Ratings:</strong> <span style="color: #ffffff !important;">${data.data.numberOfRatings}</span>`;
+
+        tooltipElement.className = 'tooltip-content';
+        tooltipElement.innerHTML = `
+          <img src="${logoSrc}" alt="RateMyKU Logo">
+          <div class="tooltip-detail tooltip-name"><strong>${
+            data.data.firstName
+          } ${data.data.lastName}</strong></div>
+          <div class="tooltip-detail"><strong>Difficulty:</strong> <span>${
+            data.data.averageDifficulty
+          } / 5</span></div>
+          <div class="tooltip-detail"><strong>Rating:</strong> <span>${
+            data.data.averageRating
+          } / 5</span></div>
+          <div class="tooltip-detail"><strong>Department:</strong> <span>${
+            data.data.department
+          }</span></div>
+          <div class="tooltip-detail"><strong>Would Take Again:</strong> <span>${parseFloat(
+            data.data.wouldTakeAgainPercentage
+          ).toFixed(2)}%</span></div>
+          <div class="tooltip-detail"><strong>Total Ratings:</strong> <span>${
+            data.data.numberOfRatings
+          }</span></div>
+        `;
       }
 
       // Append the tooltip to the rating element
@@ -108,13 +128,9 @@ function fetchProfessorData(professorName, element) {
       // Log any errors
       console.error('Failed to fetch data', error);
     });
-
-};
+}
 
 export const showData = () => {
-
-
-
   // Attach an event listener to the "Search" button
   const searchButton = document.querySelector(
     '.btn.btn-primary.classSearchButton.classes_searchBarItem'
@@ -187,21 +203,15 @@ function disableExtensionFeatures() {
   console.log('Extension disabled');
   // Add actual logic to hide or remove the ratings from the webpage
   // This can be done by removing elements, hiding them, or clearing their content
-  hideData();  // Assuming hideData is responsible for hiding/removing the ratings
+  hideData(); // Assuming hideData is responsible for hiding/removing the ratings
 }
 
 // Hide the ratings
 function hideData() {
   console.log('Hiding data');
   const ratingElements = document.querySelectorAll('.professor-rating');
-  ratingElements.forEach(element => {
+  ratingElements.forEach((element) => {
     element.remove();
     console.log('Data hidden');
   });
 }
-
-
-
-
-
-

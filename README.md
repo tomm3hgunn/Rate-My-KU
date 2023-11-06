@@ -26,7 +26,7 @@ Since env files are not pushed to the repo, in frontend/utils, you need to creat
 
 ### Running the Chrome Extension:
 
-1. Check if your [Node.js](https://nodejs.org/) version is >= **18**.
+1. Check if your [Node.js](https://nodejs.org/) version is >= **18**. For windows, install here https://nodejs.org/en/download
 2. Navigate to the `frontend` directory.
 3. Run `npm install` to install the dependencies.
 4. Run `npm start`
