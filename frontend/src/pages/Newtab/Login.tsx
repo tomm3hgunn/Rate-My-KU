@@ -1,3 +1,32 @@
+/**
+ * Prologue Comments
+ *
+ * Name of code artifact: Login Component for RateMyKU Extension
+ * Brief description: This component presents a user interface for authentication, 
+ *                    handling user login inputs, validation, and managing login state.
+ * Programmer's name(s): Thomas Nguyen
+ * Date the code was created: 11/05/2023
+ * Brief description of each revision & author:
+ *    - Implemented the initial UI and state management for login. (Thomas Nguyen @ 11/05/2023)
+ *    - Introduced error handling and form validation. (Thomas Nguyen @ 11/05/2023)
+ *    - Added back navigation to the landing page. (Thomas Nguyen @ 11/05/2023)
+ * Pre-conditions:
+ *    - The component expects two functions passed as props: one for successful login,
+ *      and one to handle the transition back to the landing page.
+ * Post-conditions:
+ *    - Provides feedback to the user if login input is invalid.
+ *    - On successful login, triggers a function that can be used to transition to another view.
+ * Error and exception condition values:
+ *    - Sets an error state if the login form is submitted with empty fields.
+ * Side effects:
+ *    - None identified; the component maintains its own state and invokes prop functions.
+ * Invariants:
+ *    - User input is validated on every submission attempt.
+ * Any known faults:
+ *    - No backend authentication logic implemented; placeholder assumes successful login.
+ */
+
+
 // Login.tsx
 import React, { useState, FormEvent } from 'react';
 import './Login.css'; // Ensure this CSS file contains the styling for your form

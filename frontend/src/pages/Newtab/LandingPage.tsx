@@ -1,3 +1,32 @@
+/**
+ * Prologue Comments
+ *
+ * Name of code artifact: Landing Page Component for RateMyKU Extension
+ * Brief description: This component is the main interface for users to interact with 
+ *                    the RateMyKU API, allowing them to test different endpoints and view responses.
+ * Programmer's name(s): Thomas Nguyen
+ * Date the code was created: 11/05/2023
+ * Brief description of each revision & author:
+ *    - Implemented the user interface for API interaction. (Thomas Nguyen @ 11/05/2023)
+ *    - Setup state management for API parameters and response. (Thomas Nguyen @ 11/05/2023)
+ *    - Added functionality to construct and make API calls. (Thomas Nguyen @ 11/05/2023)
+ *    - Integrated error handling for API response. (Thomas Nguyen @ 11/05/2023)
+ * Pre-conditions:
+ *    - The API to be accessed is expected to be running and accessible.
+ *    - A function may be passed as a prop for navigation purposes.
+ * Post-conditions:
+ *    - The API's response or error message is displayed to the user.
+ * Error and exception condition values:
+ *    - Displays an error message if the API call fails or if the response is not as expected.
+ * Side effects:
+ *    - None identified; the component is self-contained and does not modify any external state.
+ * Invariants:
+ *    - The state of the API parameters is local to this component and does not persist across sessions.
+ * Any known faults:
+ *    - No real-time validation for the API URL or parameters is implemented.
+ */
+
+
 // LandingPage.tsx
 import React, { useState } from 'react';
 import './LandingPage.css'; // Create or rename Newtab.css to LandingPage.css
