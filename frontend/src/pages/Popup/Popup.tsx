@@ -9,6 +9,7 @@
  *    - Added state for toggling settings view (Wyatt Parsons 10/22/23) 
  *    - Added switch communication with content script (Wyatt Parsons 10/22/23) 
  *    - Added logos (Wyatt Parsons 10/22/23) 
+ *    - Moved settings order (Wyatt Parsons 11/05/2023)
  *
  * Pre-conditions:
  *   - The extension is installed and enabled.
@@ -102,9 +103,9 @@ const Popup: React.FC = () => {
     // Type for settings keys
     type SettingKeys = 'showRating' | 'showDifficulty' | 'showDepartment' | 'showWouldTakeAgain' | 'showTotalRatings';
 
-    // Handle a change in a setting
-    const handleSettingChange = (setting: SettingKeys) => {
-        setSettings(prevSettings => ({
+            // Handle a change in a setting
+            const handleSettingChange = (setting: SettingKeys) => {
+                setSettings(prevSettings => ({
             ...prevSettings,
             [setting]: !prevSettings[setting]
         }));
@@ -118,7 +119,13 @@ const Popup: React.FC = () => {
                 <div className="settings">
                     <div onClick={toggleSettings} className="back">Back</div>
                     <h2>Settings</h2>
-                    <label>
+                    Show Difficulty
+                        <input
+                            type="checkbox"
+                            checked={settings.showDifficulty}
+                            onChange={() => handleSettingChange('showDifficulty')}
+                        />
+                        <label>
                         Show Rating
                         <input
                             type="checkbox"
@@ -127,12 +134,7 @@ const Popup: React.FC = () => {
                         />
                     </label>
                     <label>
-                        Show Difficulty
-                        <input
-                            type="checkbox"
-                            checked={settings.showDifficulty}
-                            onChange={() => handleSettingChange('showDifficulty')}
-                        />
+                        
                     </label>
                     <label>
                         Show Department
