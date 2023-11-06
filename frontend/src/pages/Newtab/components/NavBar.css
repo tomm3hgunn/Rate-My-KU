@@ -1,0 +1,40 @@
+.navbar {
+  position: fixed; /* Fixed position to stick to the top */
+  top: 0; /* Aligns to the top */
+  left: 0; /* Aligns to the left */
+  width: 100%; /* Spans full width */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensures it stays on top of other content */
+}
+
+.navbar-logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.nav-buttons {
+  /* Align the buttons to the right */
+}
+
+.nav-button {
+  margin-left: 10px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.nav-button:hover {
+  background-color: #0056b3;
+}
+
+.main-content {
+    padding-top: 60px; /* Adjust the value to the height of your navbar */
+}
