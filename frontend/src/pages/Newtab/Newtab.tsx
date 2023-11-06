@@ -1,89 +1,42 @@
-/**
- * Prologue Comments
- * 
- * Name of code artifact: Newtab Component for RateMyKU Extension
- * Brief description: This component provides a UI for testing the RateMyKU API.
- * Programmer's name: Thomas Nguyen
- * Date the code was created: 09/22/23
- * Brief description of each revision & author:
- *    - Added doc-strings and comments. (Thomas Nguyen @ 09/26/23)
- * Pre-conditions: 
- *    - React and useState hook must be available.
- * Post-conditions:
- *    - Displays API response based on user input.
- * Error and exception condition values: 
- *    - Sets response state to an error message if the fetch fails.
- * Side effects: 
- *    - Modifies the response state to display API data.
- * Invariants: None
- * Any known faults: None
- */
-
+// NewTab.tsx
 import React, { useState } from 'react';
-import './Newtab.css';
-import './Newtab.scss';
+import LandingPage from './LandingPage';
+import Login from './Login';
+import NavBar from './components/NavBar';
 
-const Newtab: React.FC = () => {
-    // State variables for storing API parameters and response
-    const [baseUrl, setBaseUrl] = useState<string>('ratemyprofessorapi.onrender.com/');
-    const [endpoint, setEndpoint] = useState<string>('get_professor_data');
-    const [queryParams, setQueryParams] = useState<string>('');
-    const [response, setResponse] = useState<any>(null);
+const NewTab: React.FC = () => {
+    const [showLogin, setShowLogin] = useState<boolean>(false);
 
-    /**
-    * Handles the form submission to fetch data from the API.
-    */
-    const handleSubmit = () => {
-        // Construct the full API URL
-        const url = `https://${baseUrl}${endpoint}${queryParams ? '?' + queryParams : ''}`;
-        console.log(url);
-        // Fetch data from the API
-        fetch(url)
-            .then((res) => res.json())
-            .then((data) => {
-                // Update the response state with the fetched data
-                setResponse(data);
-            })
-            .catch((error) => {
-                // Update the response state with an error message
-                setResponse({ error: 'Failed to fetch data' });
-            });
+    // Define a function to toggle the login display
+    const handleLoginClick = () => {
+        setShowLogin(true);
+    };
+
+    // Define a function to handle successful login
+    const handleLoginSuccess = () => {
+        // Logic after successful login, for now, we'll just console.log
+        console.log('Login successful');
+    };
+
+    // Define a function to go back to the landing page
+    const handleBackToLanding = () => {
+        setShowLogin(false);
     };
 
     return (
         <div className="App">
-            <h1>Test RateMyKU API Hosted on Render!</h1>
-            <div className="search-container">
-                {/* Input for the base URL */}
-                <input
-                    type="text"
-                    value={baseUrl}
-                    onChange={(e) => setBaseUrl(e.target.value)}
-                    className="search-bar"
+            {/* Pass handleLoginClick to NavBar */}
+            <NavBar onLoginClick={handleLoginClick} />
+            {showLogin ? (
+                <Login 
+                    onLoginSuccess={handleLoginSuccess}
+                    onBackToLanding={handleBackToLanding}
                 />
-                {/* Dropdown for selecting the API endpoint */}
-                <select onChange={(e) => setEndpoint(e.target.value)} className="dropdown">
-                    <option value="get_professor_data">get_professor_data</option>
-                    <option value="hello_world">hello_world</option>
-                </select>
-                {/* Input for query parameters */}
-                <input
-                    type="text"
-                    placeholder="name=Gibbons"
-                    onChange={(e) => setQueryParams(e.target.value)}
-                    className="query-params"
-                />
-                {/* Submit button */}
-                <button onClick={handleSubmit} className="submit-button">
-                    Submit
-                </button>
-            </div>
-            {/* Container for displaying the API response */}
-            <div className="response-container">
-                <pre>{JSON.stringify(response, null, 2)}</pre>
-            </div>
+            ) : (
+                <LandingPage />
+            )}
         </div>
     );
 };
 
-export default Newtab;
+export default NewTab;
