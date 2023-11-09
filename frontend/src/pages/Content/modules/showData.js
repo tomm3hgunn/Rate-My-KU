@@ -10,6 +10,7 @@
  *    - Added UI for popup. (Wyatt Parsons @ 10/08/2023)
  *    - Added logic for showing and hiding ratings. (Wyatt Parsons @ 10/22/2023)
  *    - Added logic for showing settings (Wyatt Parsons @ 11/05/2023)
+ *    - Testing chart.js integration (Thomas Nguyen @ 11/09/2023)
  * Pre-conditions:
  *    - The script must be injected into the KU classes website.
  * Post-conditions:
@@ -23,17 +24,25 @@
  * Any known faults: None
  */
 // Export the main function to show professor data
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 
 // Listen for messages from the popup
-chrome.storage.onChanged.addListener((changes, namespace) => { // 
+chrome.storage.onChanged.addListener((changes, namespace) => {
+  //
   for (var key in changes) {
     var storageChange = changes[key];
-    console.log('Storage key "%s" in namespace "%s" changed. ' +
-      'Old value was "%s", new value is "%s".',
-      key, namespace,
-      JSON.stringify(storageChange.oldValue), JSON.stringify(storageChange.newValue));
+    console.log(
+      'Storage key "%s" in namespace "%s" changed. ' +
+        'Old value was "%s", new value is "%s".',
+      key,
+      namespace,
+      JSON.stringify(storageChange.oldValue),
+      JSON.stringify(storageChange.newValue)
+    );
 
-    if (key === 'isPopupOn') { // if isPopupOn is true then enable the extension
+    if (key === 'isPopupOn') {
+      // if isPopupOn is true then enable the extension
       if (storageChange.newValue) {
         enableExtensionFeatures();
       } else {
@@ -43,7 +52,8 @@ chrome.storage.onChanged.addListener((changes, namespace) => { //
 
     // if showRating is true then set the value of showRating to true
     if (key === 'showRating') {
-      if (storageChange.newValue) { // if showRating is true then set the value of showRating to true
+      if (storageChange.newValue) {
+        // if showRating is true then set the value of showRating to true
         chrome.storage.local.set({ showRating: true }, () => {
           console.log('showRating is set to true'); // log that showRating is set to true
         });
@@ -52,22 +62,24 @@ chrome.storage.onChanged.addListener((changes, namespace) => { //
 
     // if showRating is false then set the value of showRating to false
     if (key === 'showRating') {
-      if (!storageChange.newValue) { // if showRating is false then set the value of showRating to false
-        chrome.storage.local.set({ showRating: false }, () => { // log that showRating is set to false
+      if (!storageChange.newValue) {
+        // if showRating is false then set the value of showRating to false
+        chrome.storage.local.set({ showRating: false }, () => {
+          // log that showRating is set to false
           console.log('showRating is set to false'); // log that showRating is set to false
         });
       }
     }
-
-
-
   }
 });
 
-document.addEventListener('DOMContentLoaded', () => { // when the DOM is loaded
-  chrome.storage.local.get(['isPopupOn'], (result) => { // get the value of isPopupOn
+document.addEventListener('DOMContentLoaded', () => {
+  // when the DOM is loaded
+  chrome.storage.local.get(['isPopupOn'], (result) => {
+    // get the value of isPopupOn
     console.log('State fetched: ', result.isPopupOn);
-    if (result.isPopupOn) { //  if isPopupOn is true then enable the extension
+    if (result.isPopupOn) {
+      //  if isPopupOn is true then enable the extension
       enableExtensionFeatures();
     } else {
       disableExtensionFeatures();
@@ -75,25 +87,30 @@ document.addEventListener('DOMContentLoaded', () => { // when the DOM is loaded
   });
 });
 
-
 let isExtensionEnabled = false;
 
 /**
-   * Fetches professor data from the API and appends it to the DOM.
-   * @param {string} professorName - The name of the professor.
-   * @param {Element} element - The DOM element to append the rating to.
-   */
-function fetchProfessorData(professorName, element) { // fetches professor data from the API and appends it to the DOM.
+ * Fetches professor data from the API and appends it to the DOM.
+ * @param {string} professorName - The name of the professor.
+ * @param {Element} element - The DOM element to append the rating to.
+ */
+function fetchProfessorData(professorName, element) {
+  // fetches professor data from the API and appends it to the DOM.
   // Fetch the settings from storage
-  chrome.storage.local.get('settings', (result) => { // get the value of settings
+  chrome.storage.local.get('settings', (result) => {
+    // get the value of settings
     // Check if the settings are fetched successfully
-    if (result.settings) { // if the settings are fetched successfully
+    if (result.settings) {
+      // if the settings are fetched successfully
       console.log('Settings fetched: ', result.settings); // log that the settings are fetched successfully
 
       // Now fetch data from the API
-      fetch(`https://ratemyprofessorapi.onrender.com/get_updated_professor_data?name=${professorName}`)
+      fetch(
+        `https://ratemyprofessorapi.onrender.com/get_updated_professor_data?name=${professorName}`
+      )
         .then((res) => res.json()) // Parse the JSON response
-        .then((data) => { // Handle the response data
+        .then((data) => {
+          // Handle the response data
           // Handle the rest of your logic here...
           const ratingElement = document.createElement('span'); // create a span element
           ratingElement.className = 'professor-rating'; // set the class name of the span element to professor-rating
@@ -101,23 +118,30 @@ function fetchProfessorData(professorName, element) { // fetches professor data 
           tooltipElement.className = 'tooltip-content'; // set the class name of the span element to tooltip-content
 
           // Check if the API returned an error
-          if (data.status === 'error') { // if the API returned an error
+          if (data.status === 'error') {
+            // if the API returned an error
             ratingElement.textContent = 'Rating: N/A, Difficulty: N/A';
             tooltipElement.textContent = 'No additional data available';
           } else {
             // Display the rating and difficulty
             ratingElement.innerHTML = `<a href="${data.data.url}" target="_blank">Rating: ${data.data.averageRating}, Difficulty: ${data.data.averageDifficulty}</a>`;
             const logoSrc = chrome.runtime.getURL('a9065098481a44dfc2ec.png'); // get the URL of the RateMyKU logo
-            console.log(logoSrc); // log the URL of the RateMyKU logo 
+            console.log(logoSrc); // log the URL of the RateMyKU logo
             let tooltipHTML = `<img src="${logoSrc}" alt="RateMyKU Logo" style="width: 180px; display: block; margin: 10px auto 0 auto;"><br/>  
           <strong style="color: #ffffff !important;">${data.data.lastName}, ${data.data.firstName}</strong><br/>`;
 
             // Correct usage of settings from result object
-            console.log("Show Difficulty: ", result.settings.showDifficulty);
-            console.log("Show Rating: ", result.settings.showRating);
-            console.log("Show Department: ", result.settings.showDepartment);
-            console.log("Show Would Take Again: ", result.settings.showWouldTakeAgain);
-            console.log("Show Total Ratings: ", result.settings.showTotalRatings);
+            console.log('Show Difficulty: ', result.settings.showDifficulty);
+            console.log('Show Rating: ', result.settings.showRating);
+            console.log('Show Department: ', result.settings.showDepartment);
+            console.log(
+              'Show Would Take Again: ',
+              result.settings.showWouldTakeAgain
+            );
+            console.log(
+              'Show Total Ratings: ',
+              result.settings.showTotalRatings
+            );
 
             // Add lines based on settings from result object
             if (result.settings.showDifficulty === true) {
@@ -130,7 +154,9 @@ function fetchProfessorData(professorName, element) { // fetches professor data 
               tooltipHTML += `<strong style="color: #ffffff !important;">Department:</strong> <span style="color: #ffffff !important;">${data.data.department}</span><br/>`;
             }
             if (result.settings.showWouldTakeAgain === true) {
-              tooltipHTML += `<strong style="color: #ffffff !important;">Would Take Again:</strong> <span style="color: #ffffff !important;">${parseFloat(data.data.wouldTakeAgainPercentage).toFixed(2)}%</span><br/>`;
+              tooltipHTML += `<strong style="color: #ffffff !important;">Would Take Again:</strong> <span style="color: #ffffff !important;">${parseFloat(
+                data.data.wouldTakeAgainPercentage
+              ).toFixed(2)}%</span><br/>`;
             }
             if (result.settings.showTotalRatings === true) {
               tooltipHTML += `<strong style="color: #ffffff !important;">Total Ratings:</strong> <span style="color: #ffffff !important;">${data.data.numberOfRatings}</span>`;
@@ -146,6 +172,7 @@ function fetchProfessorData(professorName, element) { // fetches professor data 
           if (element.parentElement) {
             element.parentElement.appendChild(ratingElement);
           }
+          createRatingChart(data, element);
         })
         .catch((error) => {
           console.error('Failed to fetch data', error);
@@ -154,9 +181,7 @@ function fetchProfessorData(professorName, element) { // fetches professor data 
   });
 }
 
-
 export const showData = () => {
-
   // Attach an event listener to the "Search" button
   const searchButton = document.querySelector(
     '.btn.btn-primary.classSearchButton.classes_searchBarItem'
@@ -229,21 +254,50 @@ function disableExtensionFeatures() {
   console.log('Extension disabled');
   // Add actual logic to hide or remove the ratings from the webpage
   // This can be done by removing elements, hiding them, or clearing their content
-  hideData();  // Assuming hideData is responsible for hiding/removing the ratings
+  hideData(); // Assuming hideData is responsible for hiding/removing the ratings
 }
 
 // Hide the ratings
 function hideData() {
   console.log('Hiding data');
   const ratingElements = document.querySelectorAll('.professor-rating');
-  ratingElements.forEach(element => {
+  ratingElements.forEach((element) => {
     element.remove();
     console.log('Data hidden');
   });
 }
 
+function createRatingChart(data, element) {
+  // Create a new canvas element for the chart
+  const canvas = document.createElement('canvas');
+  canvas.id = 'myChart';
+  element.appendChild(canvas);
 
+  // Prepare the data for the chart
+  const chartData = {
+    labels: ['Rating', 'Difficulty'],
+    datasets: [
+      {
+        label: 'Professor Data',
+        data: [data.data.averageRating, data.data.averageDifficulty],
+        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
+        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+        borderWidth: 1,
+      },
+    ],
+  };
 
-
-
-
+  // Create the chart
+  const ctx = canvas.getContext('2d');
+  const myChart = new Chart(ctx, {
+    type: 'bar',
+    data: chartData,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+}
