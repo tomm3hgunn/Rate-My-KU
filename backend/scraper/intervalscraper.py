@@ -1,3 +1,4 @@
+import selenium
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
@@ -12,11 +13,11 @@ def open_browser():
     driver.get("https://classes.ku.edu")
     print("Browser opened.")
 
-    search_box = driver.find_element_by_name("search")  # replace with the actual name of the search box
-    search_box.send_keys(Keys.RETURN)
+     # Wait for the button to be clickable
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, "classSearchButton")))
 
-    # Wait for the page to load
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "some-element-class")))
+    # Find the search button by its class
+    search_button = driver.find_element(By.CLASS_NAME, "classSearchButton")
 
     # Extract professor info here, then pass it to get_updated_professor_data()
     # ...
