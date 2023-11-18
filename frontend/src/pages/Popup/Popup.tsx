@@ -103,12 +103,29 @@ const Popup: React.FC = () => {
     // Type for settings keys
     type SettingKeys = 'showRating' | 'showDifficulty' | 'showDepartment' | 'showWouldTakeAgain' | 'showTotalRatings';
 
-            // Handle a change in a setting
-            const handleSettingChange = (setting: SettingKeys) => {
-                setSettings(prevSettings => ({
+    // Handle a change in a setting
+    const handleSettingChange = (setting: SettingKeys) => {
+        setSettings(prevSettings => ({
             ...prevSettings,
             [setting]: !prevSettings[setting]
         }));
+    };
+    const handleSignIn = () => {
+        console.log('About to call getAuthToken');
+
+        chrome.identity.getAuthToken({ interactive: true }, function (token) {
+            console.log('getAuthToken callback');
+
+            if (chrome.runtime.lastError) {
+                console.log('Runtime error:', chrome.runtime.lastError);
+                return;
+            }
+
+            // Use the token here
+            console.log('Token:', token);
+        });
+
+        console.log('Called getAuthToken');
     };
 
     // Render the component
@@ -120,12 +137,12 @@ const Popup: React.FC = () => {
                     <div onClick={toggleSettings} className="back">Back</div>
                     <h2>Settings</h2>
                     Show Difficulty
-                        <input
-                            type="checkbox"
-                            checked={settings.showDifficulty}
-                            onChange={() => handleSettingChange('showDifficulty')}
-                        />
-                        <label>
+                    <input
+                        type="checkbox"
+                        checked={settings.showDifficulty}
+                        onChange={() => handleSettingChange('showDifficulty')}
+                    />
+                    <label>
                         Show Rating
                         <input
                             type="checkbox"
@@ -134,7 +151,7 @@ const Popup: React.FC = () => {
                         />
                     </label>
                     <label>
-                        
+
                     </label>
                     <label>
                         Show Department
@@ -173,6 +190,8 @@ const Popup: React.FC = () => {
                     <img src={cog} className="cog-logo" alt="cog logo" onClick={toggleSettings} />
                 </header>
             )}
+            <button onClick={handleSignIn}>Sign In with Google</button>
+
         </div>
     );
 };
