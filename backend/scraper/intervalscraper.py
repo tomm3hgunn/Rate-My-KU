@@ -74,7 +74,7 @@ def perform_search(driver):
     print("Performing search...")
     search_bar = driver.find_element(By.CLASS_NAME, "form-control")
     search_bar.click()
-    search_bar.send_keys("EECS")
+    search_bar.send_keys("") # edit this to change the search query
 
     search_button = driver.find_element(By.CLASS_NAME, "classSearchButton")
     print("Search button found.")

@@ -44,9 +44,11 @@ class RateMyProfessorScraper:
         page = requests.get(url)
         professor_ids = re.findall(r'"legacyId":(\d+)', page.text)
         professor_first_names = re.findall(
-            r'"firstName":"([a-zA-Z\s\-\'\.\`\"\(\)]+)"', page.text
+            r'"firstName":"([a-zA-Z\s\_\-\'\.\`\"\(\)áéíóúÁÉÍÓÚñÑüÜ]+)"', page.text
         )
-        professor_last_names = re.findall(r'"lastName":"([\w\-\']+)"', page.text)
+        professor_last_names = re.findall(
+            r'"lastName":"([a-zA-Z\s\_\-\'\.\`\"\(\)áéíóúÁÉÍÓÚñÑüÜ]+)"', page.text
+        )
         professor_avg_ratings = re.findall(r'"avgRating":(\d+(?:\.\d+)?)', page.text)
         professor_num_ratings = re.findall(r'"numRatings":(\d+)', page.text)
         professor_would_take_again_percent = re.findall(
@@ -81,9 +83,21 @@ class RateMyProfessorScraper:
         try:
             first_professor = list(professor.values())[0]
             # Convert "N/A" to -1
-            average_rating = float(first_professor["avg_rating"]) if first_professor["avg_rating"] != "N/A" else -1
-            average_difficulty = float(first_professor["avg_difficulty"]) if first_professor["avg_difficulty"] != "N/A" else -1
-            would_take_again_percent = float(first_professor["would_take_again_percent"]) if first_professor["would_take_again_percent"] != "N/A" else -1
+            average_rating = (
+                float(first_professor["avg_rating"])
+                if first_professor["avg_rating"] != "N/A"
+                else -1
+            )
+            average_difficulty = (
+                float(first_professor["avg_difficulty"])
+                if first_professor["avg_difficulty"] != "N/A"
+                else -1
+            )
+            would_take_again_percent = (
+                float(first_professor["would_take_again_percent"])
+                if first_professor["would_take_again_percent"] != "N/A"
+                else -1
+            )
 
             response = {
                 "status": "success",
@@ -153,8 +167,12 @@ class RateMyProfessorScraper:
             # Return the data
             # Convert "N/A" to -1
             average_rating = float(average_rating) if average_rating != "N/A" else -1
-            level_of_difficulty = float(level_of_difficulty) if level_of_difficulty != "N/A" else -1
-            would_take_again = float(would_take_again) if would_take_again != "N/A" else -1
+            level_of_difficulty = (
+                float(level_of_difficulty) if level_of_difficulty != "N/A" else -1
+            )
+            would_take_again = (
+                float(would_take_again) if would_take_again != "N/A" else -1
+            )
 
             response = {
                 "status": "success",
