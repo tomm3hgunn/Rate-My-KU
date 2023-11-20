@@ -23,6 +23,7 @@ Any known faults: None
 import requests
 import re
 from lxml import html
+from datetime import datetime
 
 
 class RateMyProfessorScraper:
@@ -42,8 +43,12 @@ class RateMyProfessorScraper:
         )  # Debugging line, consider removing in production
         page = requests.get(url)
         professor_ids = re.findall(r'"legacyId":(\d+)', page.text)
-        professor_first_names = re.findall(r'"firstName":"(\w+)"', page.text)
-        professor_last_names = re.findall(r'"lastName":"([\w\-\']+)"', page.text)
+        professor_first_names = re.findall(
+            r'"firstName":"([a-zA-Z\s\_\-\'\.\`\"\(\)áéíóúÁÉÍÓÚñÑüÜ]+)"', page.text
+        )
+        professor_last_names = re.findall(
+            r'"lastName":"([a-zA-Z\s\_\-\'\.\`\"\(\)áéíóúÁÉÍÓÚñÑüÜ]+)"', page.text
+        )
         professor_avg_ratings = re.findall(r'"avgRating":(\d+(?:\.\d+)?)', page.text)
         professor_num_ratings = re.findall(r'"numRatings":(\d+)', page.text)
         professor_would_take_again_percent = re.findall(
@@ -77,6 +82,23 @@ class RateMyProfessorScraper:
         professor = self.search_by_professor_name(name)
         try:
             first_professor = list(professor.values())[0]
+            # Convert "N/A" to -1
+            average_rating = (
+                float(first_professor["avg_rating"])
+                if first_professor["avg_rating"] != "N/A"
+                else -1
+            )
+            average_difficulty = (
+                float(first_professor["avg_difficulty"])
+                if first_professor["avg_difficulty"] != "N/A"
+                else -1
+            )
+            would_take_again_percent = (
+                float(first_professor["would_take_again_percent"])
+                if first_professor["would_take_again_percent"] != "N/A"
+                else -1
+            )
+
             response = {
                 "status": "success",
                 "message": "Professor data retrieved successfully",
@@ -85,14 +107,13 @@ class RateMyProfessorScraper:
                     "id": list(professor.keys())[0],
                     "firstName": first_professor["first_name"],
                     "lastName": first_professor["last_name"],
-                    "averageRating": first_professor["avg_rating"],
-                    "averageDifficulty": first_professor["avg_difficulty"],
+                    "averageRating": average_rating,
+                    "averageDifficulty": average_difficulty,
                     "numberOfRatings": first_professor["num_ratings"],
-                    "wouldTakeAgainPercentage": first_professor[
-                        "would_take_again_percent"
-                    ],
+                    "wouldTakeAgainPercentage": would_take_again_percent,
                     "department": first_professor["department"],
                     "url": first_professor["url"],
+                    "lastUpdated": datetime.now(),
                 },
             }
             return response
@@ -121,7 +142,6 @@ class RateMyProfessorScraper:
             number_of_ratings = tree.xpath(
                 '//div[@class="RatingValue__NumRatings-qw8sqy-0 jMkisx"]/div/a/text()'
             )[0]
-            print(f"Number of Ratings: {number_of_ratings}")
 
             first_name = tree.xpath(
                 '//div[@class="NameTitle__Name-dowf0z-0 cfjPUG"]/span[1]/text()'
@@ -131,25 +151,29 @@ class RateMyProfessorScraper:
             last_name = tree.xpath(
                 '//div[@class="NameTitle__Name-dowf0z-0 cfjPUG"]/span[2]/text()'
             )[0]
-            print(f"Last Name: {last_name}")
 
             department = tree.xpath(
                 '//a[@class="TeacherDepartment__StyledDepartmentLink-fl79e8-0 iMmVHb"]/b/text()'
             )[0]
-            print(f"Department: {department}")
 
             would_take_again = tree.xpath(
                 '//div[@class="FeedbackItem__StyledFeedbackItem-uof32n-0 dTFbKx"]/div[@class="FeedbackItem__FeedbackNumber-uof32n-1 kkESWs"]/text()'
-            )[0].replace('%', '')
-            print(f"Would Take Again: {would_take_again}")
+            )[0].replace("%", "")
 
             level_of_difficulty = tree.xpath(
                 '//div[@class="FeedbackItem__StyledFeedbackItem-uof32n-0 dTFbKx"]/div[@class="FeedbackItem__FeedbackNumber-uof32n-1 kkESWs"]/text()'
             )[1]
-            print(f"Level of Difficulty: {level_of_difficulty}")
-
 
             # Return the data
+            # Convert "N/A" to -1
+            average_rating = float(average_rating) if average_rating != "N/A" else -1
+            level_of_difficulty = (
+                float(level_of_difficulty) if level_of_difficulty != "N/A" else -1
+            )
+            would_take_again = (
+                float(would_take_again) if would_take_again != "N/A" else -1
+            )
+
             response = {
                 "status": "success",
                 "message": "Professor data retrieved successfully",
@@ -164,6 +188,7 @@ class RateMyProfessorScraper:
                     "wouldTakeAgainPercentage": would_take_again,
                     "department": department,
                     "url": professor_url,
+                    "lastUpdated": datetime.now(),
                 },
             }
 

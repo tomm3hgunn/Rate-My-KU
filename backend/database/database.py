@@ -48,7 +48,9 @@ def init_database(app):
 
     # Configure SQLAlchemy
     app.config["SQLALCHEMY_DATABASE_URI"] = database_url
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False  # Silence the deprecation warning
+    app.config[
+        "SQLALCHEMY_TRACK_MODIFICATIONS"
+    ] = False  # Silence the deprecation warning
     app.config["SQLALCHEMY_ECHO"] = True  # Log all SQL commands
 
     # Initialize SQLAlchemy with app
@@ -61,13 +63,23 @@ def add_professor(data):
     db.session.commit()
 
 
+def update_professor(data):
+    professor = Professor(**data)
+    # should overwrite existing professor
+    db.session.merge(professor)
+    db.session.commit()
+
+
 def get_professor_by_name(name):
     # if there is a comma, split name
     if "," in name:
         name = name.split(",")
-        return Professor.query.filter_by(firstName=name[1].strip(), lastName=name[0].strip()).first()
+        return Professor.query.filter_by(
+            firstName=name[1].strip(), lastName=name[0].strip()
+        ).first()
     return Professor.query.filter(
-        (Professor.firstName.ilike(f"%{name}%")) | (Professor.lastName.ilike(f"%{name}%"))
+        (Professor.firstName.ilike(f"%{name}%"))
+        | (Professor.lastName.ilike(f"%{name}%"))
     ).first()
 
 
@@ -81,6 +93,7 @@ class Professor(db.Model):
     wouldTakeAgainPercentage = db.Column(db.Float, nullable=False)
     department = db.Column(db.String(50), nullable=False)
     url = db.Column(db.String(50), nullable=False)
+    lastUpdated = db.Column(db.DateTime, nullable=False)
 
     def __repr__(self):
-        return f"Professor('{self.firstName}', '{self.lastName}', '{self.averageRating}', '{self.averageDifficulty}', '{self.numberOfRatings}', '{self.wouldTakeAgainPercentage}', '{self.department}', '{self.url}')"
+        return f"Professor('{self.firstName}', '{self.lastName}', '{self.averageRating}', '{self.averageDifficulty}', '{self.numberOfRatings}', '{self.wouldTakeAgainPercentage}', '{self.department}', '{self.url}', '{self.lastUpdated}')"

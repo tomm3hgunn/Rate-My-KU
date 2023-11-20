@@ -33,6 +33,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from scraper.ratemyscraper import RateMyProfessorScraper
 from database.database import db, init_database, add_professor, get_professor_by_name
+from datetime import datetime
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -91,7 +92,7 @@ def get_professor_data():
 
     # Check if the professor exists in the database
     professor = get_professor_by_name(name)
-
+    
     if professor:
         # If exists, fetch from database
         print("Data fetched from database.")
@@ -109,6 +110,7 @@ def get_professor_data():
                 "wouldTakeAgainPercentage": professor.wouldTakeAgainPercentage,
                 "department": professor.department,
                 "url": professor.url,
+                "lastUpdated": professor.lastUpdated.strftime("%m/%d/%Y, %H:%M:%S")
             },
         }
     else:
@@ -147,6 +149,7 @@ def get_updated_professor_data():
                 "wouldTakeAgainPercentage": professor.wouldTakeAgainPercentage,
                 "department": professor.department,
                 "url": professor.url,
+                "lastUpdated": professor.lastUpdated.strftime("%m/%d/%Y, %H:%M:%S")
             },
         }
     else:
