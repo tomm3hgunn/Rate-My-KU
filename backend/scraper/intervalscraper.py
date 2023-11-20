@@ -8,6 +8,7 @@ Date the code was created: 11/18/23
 Brief description of each revision & author:
     - Added framework (Wyatt Parsons @ 11/18/23)
     - Scraping Professor name and Class number (Wyatt Parsons @ 11/19/23)
+    - Scraping all professors in KU site and input into database (Thomas Nguyen @ 11/19/23)
 Pre-conditions: 
     - `selenium` must be installed.
 Post-conditions:
@@ -74,7 +75,7 @@ def perform_search(driver):
     print("Performing search...")
     search_bar = driver.find_element(By.CLASS_NAME, "form-control")
     search_bar.click()
-    search_bar.send_keys("") # edit this to change the search query
+    search_bar.send_keys("")  # edit this to change the search query
 
     search_button = driver.find_element(By.CLASS_NAME, "classSearchButton")
     print("Search button found.")

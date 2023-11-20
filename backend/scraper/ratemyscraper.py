@@ -8,6 +8,7 @@ Date the code was created: 09/22/23
 Brief description of each revision & author:
     - Added doc-strings and comments. (Thomas Nguyen @ 09/26/23)
     - Scraping basic data of full page professor data (Thomas Nguyen @ 10/22/23)
+    - Fixed regex for get correct naming of professors (Thomas Nguyen @ 11/19/23)
 Pre-conditions: 
     - `requests` and `re` modules must be installed.
 Post-conditions:

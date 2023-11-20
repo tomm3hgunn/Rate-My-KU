@@ -7,6 +7,7 @@ Programmer's name: Thomas Nguyen
 Date the code was created: 10/04/23
 Brief description of each revision & author:
     - Initial implementation. (Thomas Nguyen @ 10/04/23)
+    - Added last updated field to db (Thomas Nguyen @ 11/19/23)
 Pre-conditions: 
     - `flask_sqlalchemy` and `dotenv` modules must be installed.
     - Environment variables for the database must be set.

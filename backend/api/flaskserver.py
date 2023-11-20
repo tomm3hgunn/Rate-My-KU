@@ -9,6 +9,7 @@ Brief description of each revision & author:
     - Added doc-strings and comments. (Thomas Nguyen @ 09/26/23)
     - Initialize database (Thomas Nguyen @ 10/04/23)
     - Get updated professor data in their specific page (Thomas Nguyen @ 10/22/23)
+    - Updated to have lastUpdated field in database (Thomas Nguyen @ 11/19/23)
 Pre-conditions: 
     - Flask and flask_cors must be installed.
     - The scraper module must be available.
@@ -92,7 +93,7 @@ def get_professor_data():
 
     # Check if the professor exists in the database
     professor = get_professor_by_name(name)
-    
+
     if professor:
         # If exists, fetch from database
         print("Data fetched from database.")
@@ -110,7 +111,7 @@ def get_professor_data():
                 "wouldTakeAgainPercentage": professor.wouldTakeAgainPercentage,
                 "department": professor.department,
                 "url": professor.url,
-                "lastUpdated": professor.lastUpdated.strftime("%m/%d/%Y, %H:%M:%S")
+                "lastUpdated": professor.lastUpdated.strftime("%m/%d/%Y, %H:%M:%S"),
             },
         }
     else:
@@ -149,7 +150,7 @@ def get_updated_professor_data():
                 "wouldTakeAgainPercentage": professor.wouldTakeAgainPercentage,
                 "department": professor.department,
                 "url": professor.url,
-                "lastUpdated": professor.lastUpdated.strftime("%m/%d/%Y, %H:%M:%S")
+                "lastUpdated": professor.lastUpdated.strftime("%m/%d/%Y, %H:%M:%S"),
             },
         }
     else:
