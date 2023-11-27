@@ -26,7 +26,7 @@ Any known faults: None
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
-
+from datetime import datetime
 # Initialize SQLAlchemy with no settings
 db = SQLAlchemy()
 
@@ -84,17 +84,50 @@ def get_professor_by_name(name):
     ).first()
 
 
+
 class Professor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     firstName = db.Column(db.String(50), nullable=False)
     lastName = db.Column(db.String(50), nullable=False)
+    department = db.Column(db.String(50), nullable=False)
+    ratings = db.relationship('Rating', backref='professor', lazy=True)
+    classInstances = db.relationship('ClassInstance', backref='professor', lazy=True)
+
+    def __repr__(self):
+        return f"<Professor {self.firstName} {self.lastName}>"
+
+class Rating(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    professor_id = db.Column(db.Integer, db.ForeignKey('professor.id'), nullable=False)
     averageRating = db.Column(db.Float, nullable=False)
     averageDifficulty = db.Column(db.Float, nullable=False)
     numberOfRatings = db.Column(db.Integer, nullable=False)
     wouldTakeAgainPercentage = db.Column(db.Float, nullable=False)
-    department = db.Column(db.String(50), nullable=False)
-    url = db.Column(db.String(50), nullable=False)
-    lastUpdated = db.Column(db.DateTime, nullable=False)
+    lastUpdated = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
-        return f"Professor('{self.firstName}', '{self.lastName}', '{self.averageRating}', '{self.averageDifficulty}', '{self.numberOfRatings}', '{self.wouldTakeAgainPercentage}', '{self.department}', '{self.url}', '{self.lastUpdated}')"
+        return f"<Rating for Professor ID {self.professor_id}>"
+
+class Class(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    classType = db.Column(db.String(50), nullable=False)
+    number = db.Column(db.Integer, nullable=False)
+    className = db.Column(db.String(100), nullable=False)
+    classYear = db.Column(db.Integer, nullable=False)
+    classDescription = db.Column(db.Text, nullable=True)
+
+    def __repr__(self):
+        return f"<Class {self.classType} {self.number} - {self.className}>"
+
+class ClassInstance(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    classId = db.Column(db.Integer, db.ForeignKey('class.id'), nullable=False)
+    professorId = db.Column(db.Integer, db.ForeignKey('professor.id'), nullable=False)
+    type = db.Column(db.String(50), nullable=False)
+    creditHours = db.Column(db.Integer, nullable=False)
+    classNumber = db.Column(db.Integer, nullable=False)
+    seatsAvailable = db.Column(db.String(50), nullable=False)
+    timeAndRoom = db.Column(db.String(100), nullable=False)
+
+    def __repr__(self):
+        return f"<ClassInstance {self.classId} - {self.professorId}>"
