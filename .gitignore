@@ -27,6 +27,7 @@ secrets.*.js
 env/
 venv/
 venv_win/
+venv_mac/
 .venv/
 env*
 dist/

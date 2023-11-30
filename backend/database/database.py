@@ -27,6 +27,7 @@ from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
 from datetime import datetime
+
 # Initialize SQLAlchemy with no settings
 db = SQLAlchemy()
 
@@ -59,13 +60,13 @@ def init_database(app):
 
 
 def add_professor(data):
-    professor = Professor(**data)
+    professor = Professors(**data)
     db.session.add(professor)
     db.session.commit()
 
 
 def update_professor(data):
-    professor = Professor(**data)
+    professor = Professors(**data)
     # should overwrite existing professor
     db.session.merge(professor)
     db.session.commit()
@@ -75,30 +76,30 @@ def get_professor_by_name(name):
     # if there is a comma, split name
     if "," in name:
         name = name.split(",")
-        return Professor.query.filter_by(
+        return Professors.query.filter_by(
             firstName=name[1].strip(), lastName=name[0].strip()
         ).first()
-    return Professor.query.filter(
-        (Professor.firstName.ilike(f"%{name}%"))
-        | (Professor.lastName.ilike(f"%{name}%"))
+    return Professors.query.filter(
+        (Professors.firstName.ilike(f"%{name}%"))
+        | (Professors.lastName.ilike(f"%{name}%"))
     ).first()
 
 
-
-class Professor(db.Model):
+class Professors(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     firstName = db.Column(db.String(50), nullable=False)
     lastName = db.Column(db.String(50), nullable=False)
     department = db.Column(db.String(50), nullable=False)
-    ratings = db.relationship('Rating', backref='professor', lazy=True)
-    classInstances = db.relationship('ClassInstance', backref='professor', lazy=True)
+    ratings = db.relationship("Rating", backref="professors", lazy=True)
+    classInstances = db.relationship("ClassInstance", backref="professors", lazy=True)
 
     def __repr__(self):
         return f"<Professor {self.firstName} {self.lastName}>"
 
+
 class Rating(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    professor_id = db.Column(db.Integer, db.ForeignKey('professor.id'), nullable=False)
+    professor_id = db.Column(db.Integer, db.ForeignKey("professors.id"), nullable=False)
     averageRating = db.Column(db.Float, nullable=False)
     averageDifficulty = db.Column(db.Float, nullable=False)
     numberOfRatings = db.Column(db.Integer, nullable=False)
@@ -107,6 +108,7 @@ class Rating(db.Model):
 
     def __repr__(self):
         return f"<Rating for Professor ID {self.professor_id}>"
+
 
 class Class(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -119,10 +121,11 @@ class Class(db.Model):
     def __repr__(self):
         return f"<Class {self.classType} {self.number} - {self.className}>"
 
+
 class ClassInstance(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    classId = db.Column(db.Integer, db.ForeignKey('class.id'), nullable=False)
-    professorId = db.Column(db.Integer, db.ForeignKey('professor.id'), nullable=False)
+    classId = db.Column(db.Integer, db.ForeignKey("class.id"), nullable=False)
+    professorId = db.Column(db.Integer, db.ForeignKey("professors.id"), nullable=False)
     type = db.Column(db.String(50), nullable=False)
     creditHours = db.Column(db.Integer, nullable=False)
     classNumber = db.Column(db.Integer, nullable=False)
