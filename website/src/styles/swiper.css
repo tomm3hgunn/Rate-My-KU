@@ -1,0 +1,19 @@
+.swiper-button-next {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.swiper-button-prev {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.swiper-pagination-bullet {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Hide the navigation buttons on screens smaller than 640px */
+@media (max-width: 800px) {
+    .swiper-button-prev,
+    .swiper-button-next {
+        display: none;
+    }
+}
