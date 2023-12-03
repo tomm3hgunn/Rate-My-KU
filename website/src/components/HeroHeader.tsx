@@ -3,10 +3,11 @@
  *
  * Name of code artifact: HeroHeader Component
  * Brief description: This code defines a HeroHeader component for a React application using TypeScript and Swiper.
- * Programmer's name: Thomas Nguyen
+ * Programmer's name: Thomas Nguyen & Wyatt Parsons
  * Date the code was created: 12/01/2023
  * Brief description of each revision & author:
  *     - Initial implementation. (Thomas Nguyen @ 12/01/23)
+ *     - Changed content to match Rate My KU. (Wyatt Parsons @ 12/03/23)
  * Pre-conditions: 
  *     - `react`, `swiper`, and `typescript` modules must be installed.
  * Post-conditions:
@@ -79,7 +80,7 @@ const HeroHeader: React.FC<HeroHeaderProps> = ({ id, title, subtitle, images, op
                             <p className="text-left text-sm md:text-2xl text-gray-400 z-10 font-inter font-bold">{leftSubtitle}</p>
                         </div>
                         <div className="absolute bottom-0 right-0 p-8 z-10">
-                            <h2 className="text-xs md:text-xl text-white font-bold font-jarkarta">Defend Tomorrow, Today.</h2>
+                            <h2 className="text-xs md:text-xl text-white font-bold font-jarkarta">Smart Course Selection.</h2>
                         </div>
                     </SwiperSlide>
                 ))}

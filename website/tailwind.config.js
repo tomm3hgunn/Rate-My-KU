@@ -37,6 +37,8 @@ module.exports = {
                 "custom-black": "#141618",
                 "custom-black-shade": "#262a2d",
                 "custom-gray": "#8A8A8A",
+                "custom-navy": "#146091",
+                "custom-navy-shade": "#1C3D5A",
             },
             bgGradientDeg: {
                 75: "75deg",

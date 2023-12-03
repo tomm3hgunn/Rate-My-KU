@@ -33,9 +33,7 @@ const Footer: React.FC<FooterProps> = ({ copyrightText }) => {
                     </div>
                 </div>
                 <div className="flex">
-                    <a href="https://enterprise-kc.com/privacy-policy.html" className="text-gray-600 dark:text-gray-400 font-inter">
-                        Privacy Policy
-                    </a>
+
                 </div>
                 <p className="text-sm text-gray-600 dark:text-gray-400 font-inter">
                     {copyrightText}

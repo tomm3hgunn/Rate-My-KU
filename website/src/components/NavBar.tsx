@@ -3,10 +3,11 @@
  *
  * Name of code artifact: NavBar Component
  * Brief description: This code defines a NavBar component for a React application using TypeScript and react-router-dom.
- * Programmer's name: Thomas Nguyen
+ * Programmer's name: Thomas Nguyen & Wyatt Parsons
  * Date the code was created: 12/01/2023
  * Brief description of each revision & author:
  *     - Initial implementation. (Thomas Nguyen @ 12/01/23)
+ *     - Edited comments and changed content to match Rate My KU. (Wyatt Parsons @ 12/03/23)
  * Pre-conditions: 
  *     - `react`, `react-router-dom`, and `typescript` modules must be installed.
  * Post-conditions:
@@ -61,36 +62,36 @@ const NavBar: React.FC<NavBarProps> = ({ logo }) => {
     };
 
     const feature_left_column = {
-        title: 'Title',
+        title: 'Customize',
         items: [
-            "item1",
-            "item2",
+            "Settings",
+            "Lorem Ipsum",
         ]
     }
     const feature_right_column = {
-        title: 'Title',
+        title: 'Lorem',
         items: [
-            "item1",
-            "item2",
+            "Lorem Ipsum",
+            "Ipsum",
         ]
     }
 
     return (
         <div className={`fixed top-0 z-30 w-full text-white font-inter font-bold ${hasScrolled && 'shadow-md'}`}>
             {/* Upper bar */}
-            <div className='bg-custom-blue text-sm hidden lg:block'>
+            <div className='bg-custom-navy text-sm hidden lg:block'>
                 <div className='container mx-auto px-4'>
                     <ul className="flex justify-end list-none m-0 py-3">
                         {/* List of li for Support, Contact Us */}
-                        <li className='inline-block align-middle'>
-                            <Link
+                        {/* <li className='inline-block align-middle'>
+                           <Link
                                 to="/support" // Update the path as needed
-                                onClick={(e: React.MouseEvent) => { /* your click handler */ }}
+                                onClick={(e: React.MouseEvent) => { }}
                                 className='text-white py-2 px-3 transition-colors duration-500' // Add hover and transition effects as needed
                             >
-                                Support
-                            </Link>
-                        </li>
+                                Settings
+                        </Link>
+                        </li> */}
                         <li className='inline-block align-middle'>
                             <Link
                                 to="/contact-us" // Update the path as needed
@@ -138,9 +139,9 @@ const NavBar: React.FC<NavBarProps> = ({ logo }) => {
                                     <li className='inline-block px-4'>
                                         <SimpleButton
                                             // simple button that says schedule a demo with bg color as custom blue and test as white
-                                            bgColor='bg-custom-blue'
+                                            bgColor='bg-custom-navy'
                                             textColor='white'
-                                            label='Request a Demo'
+                                            label='Download Now'
                                             withArrow={false}
                                             size="small"
                                             onClick={() => { }}
@@ -200,7 +201,7 @@ const NavBar: React.FC<NavBarProps> = ({ logo }) => {
                     />
                     <li className='text-center py-2'>
                         <SimpleButton
-                            bgColor='bg-custom-blue'
+                            bgColor='bg-custom-navy'
                             textColor='white'
                             label='Request a Demo'
                             withArrow={false}
