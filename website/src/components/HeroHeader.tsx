@@ -1,3 +1,24 @@
+/**
+ * Prologue Comments
+ *
+ * Name of code artifact: HeroHeader Component
+ * Brief description: This code defines a HeroHeader component for a React application using TypeScript and Swiper.
+ * Programmer's name: Thomas Nguyen
+ * Date the code was created: 12/01/2023
+ * Brief description of each revision & author:
+ *     - Initial implementation. (Thomas Nguyen @ 12/01/23)
+ * Pre-conditions: 
+ *     - `react`, `swiper`, and `typescript` modules must be installed.
+ * Post-conditions:
+ *     - Renders a HeroHeader component with specified properties.
+ * Error and exception condition values: 
+ *     - None. Errors would be raised by React if required props are not provided.
+ * Side effects: 
+ *     - Renders a HeroHeader component in the DOM.
+ * Invariants: None
+ * Any known faults: None
+ */
+
 import React from 'react';
 import 'swiper/css';
 import 'swiper/css/navigation';

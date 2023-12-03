@@ -1,3 +1,25 @@
+/**
+ * Prologue Comments
+ *
+ * Name of code artifact: NavBar Component
+ * Brief description: This code defines a NavBar component for a React application using TypeScript and react-router-dom.
+ * Programmer's name: Thomas Nguyen
+ * Date the code was created: 12/01/2023
+ * Brief description of each revision & author:
+ *     - Initial implementation. (Thomas Nguyen @ 12/01/23)
+ * Pre-conditions: 
+ *     - `react`, `react-router-dom`, and `typescript` modules must be installed.
+ * Post-conditions:
+ *     - Renders a NavBar component with specified logo and navigation links.
+ * Error and exception condition values: 
+ *     - None. Errors would be raised by React if required props are not provided.
+ * Side effects: 
+ *     - Renders a NavBar component in the DOM.
+ *     - Adds and removes a scroll event listener to the window.
+ * Invariants: None
+ * Any known faults: None
+ */
+
 import React, { useEffect, useState } from 'react';
 import SimpleButton from './SimpleButton';
 import Dropdown from './Dropdown';

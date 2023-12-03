@@ -1,3 +1,23 @@
+/**
+ * Prologue Comments
+ *
+ * Name of code artifact: Dropdown Component
+ * Brief description: This code defines a Dropdown component for a React application using TypeScript and react-router-dom.
+ * Programmer's name: Thomas Nguyen
+ * Date the code was created: 12/01/2023
+ * Brief description of each revision & author:
+ *     - Initial implementation. (Thomas Nguyen @ 12/01/23)
+ * Pre-conditions: 
+ *     - `react`, `react-router-dom`, and `typescript` modules must be installed.
+ * Post-conditions:
+ *     - Renders a dropdown component with specified label and columns.
+ * Error and exception condition values: 
+ *     - None. Errors would be raised by React if required props are not provided.
+ * Side effects: 
+ *     - Renders a dropdown component in the DOM.
+ * Invariants: None
+ * Any known faults: None
+ */
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -25,7 +45,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, leftColumn, rightColumn }) =
         >
             {/* Link that wraps the button */}
             <Link to={`/${label.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="inline-flex items-center px-4 py-2 hover:text-custom-gray focus:outline-none transition-colors duration-500">
+                className="inline-flex items-center px-4 py-2 hover:text-custom-gray focus:outline-none transition-colors duration-500">
                 {/* Button that toggles the dropdown's visibility on hover */}
                 <button
                     onMouseOver={() => setIsOpen(true)}
